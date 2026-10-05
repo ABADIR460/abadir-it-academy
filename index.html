@@ -1,158 +1,95 @@
 <!DOCTYPE html>
 <html lang="om">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Abadir IT Academy - Barnoota IT fi Teknooloojii Afaan Oromoo fi English.">
-  <title>Abadir IT Academy | Barnoota Teknooloojii</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Abadir IT Academy - Computer, Web Development, Database, Networking and AI training in Afaan Oromoo and English.">
+<meta name="theme-color" content="#071426">
+<title>Abadir IT Academy | Learn IT & AI</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="header">
-    <a class="logo" href="#home">Abadir<span>IT</span></a>
-    <nav id="nav">
-      <a href="#home" data-om="Mana" data-en="Home">Mana</a>
-      <a href="#courses" data-om="Koorsota" data-en="Courses">Koorsota</a>
-      <a href="#about" data-om="Waa'ee Keenya" data-en="About">Waa'ee Keenya</a>
-      <a href="#contact" data-om="Nu Qunnami" data-en="Contact">Nu Qunnami</a>
-    </nav>
-    <div class="actions">
-      <button id="langBtn" class="small-btn">EN</button>
-      <button id="themeBtn" class="small-btn" aria-label="Dark mode">☾</button>
-      <button id="menuBtn" class="menu-btn" aria-label="Menu">☰</button>
+<header class="header">
+  <a class="logo" href="#home" aria-label="Abadir IT Academy">Abadir<span>IT</span><small> Academy</small></a>
+  <nav id="nav">
+    <a href="#home" data-om="Mana" data-en="Home">Mana</a>
+    <a href="#courses" data-om="Koorsota" data-en="Courses">Koorsota</a>
+    <a href="#about" data-om="Waa'ee Keenya" data-en="About">Waa'ee Keenya</a>
+    <a href="#why" data-om="Maaliif Nu?" data-en="Why Us">Maaliif Nu?</a>
+    <a href="#faq" data-om="FAQ" data-en="FAQ">FAQ</a>
+    <a href="#contact" data-om="Nu Qunnami" data-en="Contact">Nu Qunnami</a>
+  </nav>
+  <div class="actions">
+    <button id="langBtn" class="small-btn">EN</button>
+    <button id="themeBtn" class="small-btn" aria-label="Toggle theme">☾</button>
+    <button id="menuBtn" class="menu-btn" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<main>
+<section id="home" class="hero">
+  <div class="hero-content">
+    <p class="eyebrow">💻 ABADIR IT ACADEMY</p>
+    <h1 data-om="Ogummaa Teknooloojii Har'a Baradhu, Boru Keessan Ijaari." data-en="Learn Technology Today. Build Your Future Tomorrow.">Ogummaa Teknooloojii Har'a Baradhu, Boru Keessan Ijaari.</h1>
+    <p class="hero-text" data-om="Computer, Web Development, Database, Networking fi AI barnoota salphaa, qabatamaa fi Afaan Oromootiin baradhu." data-en="Learn Computer, Web Development, Database, Networking and AI through simple, practical lessons in Afaan Oromoo.">Computer, Web Development, Database, Networking fi AI barnoota salphaa, qabatamaa fi Afaan Oromootiin baradhu.</p>
+    <div class="hero-buttons">
+      <a href="#courses" class="btn primary" data-om="Koorsota Ilaali →" data-en="Explore Courses →">Koorsota Ilaali →</a>
+      <a href="#register" class="btn secondary" data-om="Galmaa'i" data-en="Register Now">Galmaa'i</a>
     </div>
-  </header>
+    <div class="stats">
+      <div><strong>8+</strong><span data-om="Koorsota" data-en="Courses">Koorsota</span></div>
+      <div><strong>100+</strong><span data-om="Barnoota" data-en="Lessons">Barnoota</span></div>
+      <div><strong>24/7</strong><span data-om="Online" data-en="Online">Online</span></div>
+    </div>
+  </div>
+  <div class="hero-card">
+    <div class="code-window">
+      <div class="window-top"><span></span><span></span><span></span><b>abadir-it-academy</b></div>
+      <pre><code><span class="purple">const</span> student = {
+  name: <span class="green">"Future Developer"</span>,
+  skills: [<span class="green">"HTML"</span>, <span class="green">"CSS"</span>, <span class="green">"JS"</span>],
+  goal: <span class="green">"Build & Grow"</span>
+};
 
-  <main>
-    <section id="home" class="hero">
-      <div class="hero-content">
-        <p class="eyebrow">💻 ABADIR IT ACADEMY</p>
-        <h1 data-om="Ogummaa Teknooloojii Afaan Oromootiin Baradhu"
-            data-en="Learn Technology Skills in Afaan Oromoo">Ogummaa Teknooloojii Afaan Oromootiin Baradhu</h1>
-        <p class="hero-text"
-           data-om="Computer, Web Development, Database, Networking fi AI barnoota salphaa fi qabatamaa ta'een baradhu."
-           data-en="Learn Computer, Web Development, Database, Networking and AI through simple, practical lessons.">
-          Computer, Web Development, Database, Networking fi AI barnoota salphaa fi qabatamaa ta'een baradhu.
-        </p>
-        <div class="hero-buttons">
-          <a href="#courses" class="btn primary" data-om="Barnoota Jalqabi →" data-en="Start Learning →">Barnoota Jalqabi →</a>
-          <a href="#contact" class="btn secondary" data-om="Nu Qunnami" data-en="Contact Us">Nu Qunnami</a>
-        </div>
-        <div class="stats">
-          <div><strong>8+</strong><span data-om="Koorsota" data-en="Courses">Koorsota</span></div>
-          <div><strong>100+</strong><span data-om="Barnoota" data-en="Lessons">Barnoota</span></div>
-          <div><strong>24/7</strong><span data-om="Barnoota Online" data-en="Online Learning">Barnoota Online</span></div>
-        </div>
-      </div>
-      <div class="hero-card">
-        <div class="code-window">
-          <div class="dots"><i></i><i></i><i></i></div>
-          <pre><code>&lt;h1&gt;Hello, Developer!&lt;/h1&gt;
+<span class="blue">learn</span>();
+<span class="blue">build</span>();
+<span class="blue">grow</span>();</code></pre>
+    </div>
+  </div>
+</section>
 
-<span>const</span> future = <span>"Bright"</span>;
-<span>learn</span>();
-<span>build</span>();
-<span>grow</span>();</code></pre>
-        </div>
-      </div>
-    </section>
+<section id="courses" class="section">
+  <div class="section-title"><p class="eyebrow">📚 COURSES</p><h2 data-om="Koorsota Keenya" data-en="Our Courses">Koorsota Keenya</h2><p data-om="Ogummaa hojii, qormaataa fi jireenya dijitaalaa keessatti si barbaachisu baradhu." data-en="Learn practical skills for work, exams and digital life.">Ogummaa hojii, qormaataa fi jireenya dijitaalaa keessatti si barbaachisu baradhu.</p></div>
+  <div class="course-grid">
+    <article class="course-card"><div class="icon">🖥️</div><span class="tag">Beginner</span><h3>Computer Basics</h3><p data-om="Computer fundamentals, Windows, files, folders, internet fi safety." data-en="Computer fundamentals, Windows, files, folders, internet and safety.">Computer fundamentals, Windows, files, folders, internet fi safety.</p><button class="course-btn" data-course="Computer Basics" data-om="Galmaa'i →" data-en="Enroll →">Galmaa'i →</button></article>
+    <article class="course-card"><div class="icon">🌐</div><span class="tag">Web</span><h3>HTML & CSS</h3><p data-om="Website bareedaa, sirrii fi mobile responsive ijaaruu baradhu." data-en="Learn to build beautiful, clean and responsive websites.">Website bareedaa, sirrii fi mobile responsive ijaaruu baradhu.</p><button class="course-btn" data-course="HTML & CSS" data-om="Galmaa'i →" data-en="Enroll →">Galmaa'i →</button></article>
+    <article class="course-card"><div class="icon">⚡</div><span class="tag">Web</span><h3>JavaScript</h3><p data-om="Website interactive fi dynamic godhuu fi programming fundamentals baradhu." data-en="Learn interactivity, dynamic websites and programming fundamentals.">Website interactive fi dynamic godhuu fi programming fundamentals baradhu.</p><button class="course-btn" data-course="JavaScript" data-om="Galmaa'i →" data-en="Enroll →">Galmaa'i →</button></article>
+    <article class="course-card"><div class="icon">🗄️</div><span class="tag">IT</span><h3>Database</h3><p data-om="Tables, records, fields, keys, SQL fi database management baradhu." data-en="Learn tables, records, fields, keys, SQL and database management.">Tables, records, fields, keys, SQL fi database management baradhu.</p><button class="course-btn" data-course="Database" data-om="Galmaa'i →" data-en="Enroll →">Galmaa'i →</button></article>
+    <article class="course-card"><div class="icon">🔗</div><span class="tag">Networking</span><h3>Networking</h3><p data-om="LAN, WAN, IP address, devices, topology fi network security baradhu." data-en="Learn LAN, WAN, IP addresses, devices, topology and network security.">LAN, WAN, IP address, devices, topology fi network security baradhu.</p><button class="course-btn" data-course="Networking" data-om="Galmaa'i →" data-en="Enroll →">Galmaa'i →</button></article>
+    <article class="course-card"><div class="icon">🤖</div><span class="tag">AI</span><h3>AI & Generative AI</h3><p data-om="AI maal akka ta'e, prompting fi hojii keessatti itti fayyadamu baradhu." data-en="Understand AI, prompting and practical ways to use Generative AI.">AI maal akka ta'e, prompting fi hojii keessatti itti fayyadamu baradhu.</p><button class="course-btn" data-course="AI & Generative AI" data-om="Galmaa'i →" data-en="Enroll →">Galmaa'i →</button></article>
+    <article class="course-card"><div class="icon">🛡️</div><span class="tag">Practical</span><h3>IT Support</h3><p data-om="Windows, troubleshooting, software, hardware fi basic maintenance." data-en="Windows, troubleshooting, software, hardware and basic maintenance.">Windows, troubleshooting, software, hardware fi basic maintenance.</p><button class="course-btn" data-course="IT Support" data-om="Galmaa'i →" data-en="Enroll →">Galmaa'i →</button></article>
+    <article class="course-card"><div class="icon">🎓</div><span class="tag">Exam</span><h3>COC / HNS Preparation</h3><p data-om="Qormaata practical fi theory ITf qophii gaarii, practice fi model questions." data-en="Structured IT theory and practical exam preparation with practice questions.">Qormaata practical fi theory ITf qophii gaarii, practice fi model questions.</p><button class="course-btn" data-course="COC / HNS Preparation" data-om="Galmaa'i →" data-en="Enroll →">Galmaa'i →</button></article>
+  </div>
+</section>
 
-    <section id="courses" class="section">
-      <div class="section-title">
-        <p class="eyebrow">📚 COURSES</p>
-        <h2 data-om="Koorsota Keenya" data-en="Our Courses">Koorsota Keenya</h2>
-        <p data-om="Ogummaa hojii fi jireenya dijitaalaa keessatti si barbaachisu baradhu."
-           data-en="Learn practical skills you can use in work and digital life.">
-          Ogummaa hojii fi jireenya dijitaalaa keessatti si barbaachisu baradhu.
-        </p>
-      </div>
+<section id="about" class="section alt">
+  <div class="about-box">
+    <div><p class="eyebrow">🎓 ABOUT US</p><h2 data-om="Barnoota Teknooloojii Nama Hundaaf" data-en="Technology Education for Everyone">Barnoota Teknooloojii Nama Hundaaf</h2><p data-om="Abadir IT Academy bakka barattoonni, barsiisonni fi namoonni ogummaa dijitaalaa cimsachuu barbaadanitti barnoota IT fi AI salphaa, ifa fi qabatamaa argatan dha." data-en="Abadir IT Academy provides simple, clear and practical IT and AI education for learners, teachers and anyone who wants to build digital skills.">Abadir IT Academy bakka barattoonni, barsiisonni fi namoonni ogummaa dijitaalaa cimsachuu barbaadanitti barnoota IT fi AI salphaa, ifa fi qabatamaa argatan dha.</p></div>
+    <div class="check-list"><div>✓ <span data-om="Barnoota salphaa fi ifa" data-en="Simple and clear lessons">Barnoota salphaa fi ifa</span></div><div>✓ <span data-om="Practical projects" data-en="Practical projects">Practical projects</span></div><div>✓ <span data-om="Qormaataaf qophii" data-en="Exam preparation">Qormaataaf qophii</span></div><div>✓ <span data-om="Afaan Oromoo + English" data-en="Afaan Oromoo + English">Afaan Oromoo + English</span></div></div>
+  </div>
+</section>
 
-      <div class="course-grid">
-        <article class="course-card">
-          <div class="icon">🖥️</div><span class="tag">Beginner</span>
-          <h3>Computer Basics</h3>
-          <p data-om="Bu'uura computer, Windows, files, folders fi internet."
-             data-en="Computer fundamentals, Windows, files, folders and internet.">Bu'uura computer, Windows, files, folders fi internet.</p>
-          <a href="#contact" data-om="Baradhu →" data-en="Learn →">Baradhu →</a>
-        </article>
-        <article class="course-card">
-          <div class="icon">🌐</div><span class="tag">Web</span>
-          <h3>HTML & CSS</h3>
-          <p data-om="Website bareedaa fi responsive ijaaruu jalqabi."
-             data-en="Start building beautiful and responsive websites.">Website bareedaa fi responsive ijaaruu jalqabi.</p>
-          <a href="#contact" data-om="Baradhu →" data-en="Learn →">Baradhu →</a>
-        </article>
-        <article class="course-card">
-          <div class="icon">⚡</div><span class="tag">Web</span>
-          <h3>JavaScript</h3>
-          <p data-om="Website kee interactive fi dynamic godhuu baradhu."
-             data-en="Learn to make your websites interactive and dynamic.">Website kee interactive fi dynamic godhuu baradhu.</p>
-          <a href="#contact" data-om="Baradhu →" data-en="Learn →">Baradhu →</a>
-        </article>
-        <article class="course-card">
-          <div class="icon">🗄️</div><span class="tag">IT</span>
-          <h3>Database</h3>
-          <p data-om="Tables, records, fields, keys fi database management."
-             data-en="Learn tables, records, fields, keys and database management.">Tables, records, fields, keys fi database management.</p>
-          <a href="#contact" data-om="Baradhu →" data-en="Learn →">Baradhu →</a>
-        </article>
-        <article class="course-card">
-          <div class="icon">🔗</div><span class="tag">Networking</span>
-          <h3>Networking</h3>
-          <p data-om="LAN, WAN, devices, IP address fi network security."
-             data-en="LAN, WAN, devices, IP addresses and network security.">LAN, WAN, devices, IP address fi network security.</p>
-          <a href="#contact" data-om="Baradhu →" data-en="Learn →">Baradhu →</a>
-        </article>
-        <article class="course-card">
-          <div class="icon">🤖</div><span class="tag">AI</span>
-          <h3>AI & Generative AI</h3>
-          <p data-om="AI maal akka ta'e fi hojii keessatti itti fayyadamu baradhu."
-             data-en="Understand AI and learn practical ways to use it.">AI maal akka ta'e fi hojii keessatti itti fayyadamu baradhu.</p>
-          <a href="#contact" data-om="Baradhu →" data-en="Learn →">Baradhu →</a>
-        </article>
-      </div>
-    </section>
+<section id="why" class="section"><div class="section-title"><p class="eyebrow">⭐ WHY US</p><h2 data-om="Maaliif Abadir IT Academy?" data-en="Why Learn With Us?">Maaliif Abadir IT Academy?</h2></div><div class="why-grid"><div class="why-card"><b>01</b><h3 data-om="Afaan Oromoo" data-en="Afaan Oromoo">Afaan Oromoo</h3><p data-om="Conceptoota technical afaan salphaan hubachiisna." data-en="We explain technical concepts in simple, understandable language.">Conceptoota technical afaan salphaan hubachiisna.</p></div><div class="why-card"><b>02</b><h3 data-om="Qabatamaa" data-en="Practical">Qabatamaa</h3><p data-om="Barnoota qofa osoo hin taane project fi practice irratti xiyyeeffanna." data-en="We focus on practice and projects, not theory alone.">Barnoota qofa osoo hin taane project fi practice irratti xiyyeeffanna.</p></div><div class="why-card"><b>03</b><h3 data-om="Beginner Friendly" data-en="Beginner Friendly">Beginner Friendly</h3><p data-om="Namni beginner ta'e irraa kaasee tartiibaan barachuu danda'a." data-en="Beginners can start from the basics and progress step by step.">Namni beginner ta'e irraa kaasee tartiibaan barachuu danda'a.</p></div><div class="why-card"><b>04</b><h3 data-om="Online" data-en="Online">Online</h3><p data-om="Barnoota kee yeroo fi bakka siif mijatutti hordofi." data-en="Learn from wherever and whenever it works for you.">Barnoota kee yeroo fi bakka siif mijatutti hordofi.</p></div></div></section>
 
-    <section id="about" class="section about">
-      <div class="about-box">
-        <div>
-          <p class="eyebrow">🎓 ABOUT</p>
-          <h2 data-om="Barnoota Teknooloojii Nama Hundaaf"
-              data-en="Technology Education for Everyone">Barnoota Teknooloojii Nama Hundaaf</h2>
-          <p data-om="Kaayyoon Abadir IT Academy ogummaa IT fi AI Afaan Oromootiin salphaa, ifa fi qabatamaa ta'een barsiisuu dha."
-             data-en="Abadir IT Academy aims to make IT and AI education simple, clear and practical in Afaan Oromoo.">
-            Kaayyoon Abadir IT Academy ogummaa IT fi AI Afaan Oromootiin salphaa, ifa fi qabatamaa ta'een barsiisuu dha.
-          </p>
-        </div>
-        <div class="check-list">
-          <div>✓ <span data-om="Barnoota salphaa" data-en="Simple lessons">Barnoota salphaa</span></div>
-          <div>✓ <span data-om="Qormaataaf qophii" data-en="Exam preparation">Qormaataaf qophii</span></div>
-          <div>✓ <span data-om="Practical projects" data-en="Practical projects">Practical projects</span></div>
-          <div>✓ <span data-om="Barnoota Afaan Oromoo" data-en="Afaan Oromoo learning">Barnoota Afaan Oromoo</span></div>
-        </div>
-      </div>
-    </section>
+<section id="register" class="section alt"><div class="register-wrap"><div><p class="eyebrow">📝 REGISTRATION</p><h2 data-om="Koorsaa Filadhu, Galmaa'i" data-en="Choose a Course & Register">Koorsaa Filadhu, Galmaa'i</h2><p data-om="Foormii kana guuti. Ergaan galmee kee WhatsApp irratti qophaa'a." data-en="Fill the form. Your registration message will be prepared for WhatsApp.">Foormii kana guuti. Ergaan galmee kee WhatsApp irratti qophaa'a.</p><div class="mini-points"><span>✓ Free consultation</span><span>✓ Practical learning</span><span>✓ Certificate option</span></div></div><form id="registrationForm"><label>Full Name / Maqaa Guutuu<input id="studentName" type="text" required placeholder="Your full name"></label><label>Phone / Bilbila<input id="studentPhone" type="tel" required placeholder="09xxxxxxxx"></label><label>Course / Koorsaa<select id="studentCourse" required><option value="">Choose course</option><option>Computer Basics</option><option>HTML & CSS</option><option>JavaScript</option><option>Database</option><option>Networking</option><option>AI & Generative AI</option><option>IT Support</option><option>COC / HNS Preparation</option></select></label><label>Message / Ergaa<textarea id="studentMessage" rows="4" placeholder="Optional message"></textarea></label><button class="btn primary" type="submit" data-om="WhatsApp irratti galmaa'i →" data-en="Register via WhatsApp →">WhatsApp irratti galmaa'i →</button></form></div></section>
 
-    <section id="contact" class="section contact">
-      <div class="contact-card">
-        <div>
-          <p class="eyebrow">📩 CONTACT</p>
-          <h2 data-om="Har'a Jalqabi" data-en="Start Today">Har'a Jalqabi</h2>
-          <p data-om="Barnoota IT fi AI jalqabuuf nu qunnami."
-             data-en="Contact us to start learning IT and AI.">Barnoota IT fi AI jalqabuuf nu qunnami.</p>
-        </div>
-        <div class="contact-buttons">
-          <a class="btn telegram" href="https://t.me/ab11th_technology" target="_blank">✈ Telegram</a>
-          <a class="btn whatsapp" href="https://wa.me/" target="_blank">☏ WhatsApp</a>
-        </div>
-      </div>
-    </section>
-  </main>
+<section id="faq" class="section"><div class="section-title"><p class="eyebrow">❓ FAQ</p><h2 data-om="Gaaffiiwwan Yeroo Baay'ee Gaafataman" data-en="Frequently Asked Questions">Gaaffiiwwan Yeroo Baay'ee Gaafataman</h2></div><div class="faq-list"><details><summary data-om="Barnoonni eenyuuf?" data-en="Who are the courses for?">Barnoonni eenyuuf?</summary><p data-om="Beginner irraa kaasee hanga nama ogummaa isaa cimsachuu barbaadutti." data-en="From complete beginners to learners who want to strengthen their skills.">Beginner irraa kaasee hanga nama ogummaa isaa cimsachuu barbaadutti.</p></details><details><summary data-om="Barnoonni Afaan Oromootiin jiraa?" data-en="Are lessons available in Afaan Oromoo?">Barnoonni Afaan Oromootiin jiraa?</summary><p data-om="Eeyyee. Qabiyyee hedduu Afaan Oromoo fi English walitti makuun dhiheessina." data-en="Yes. Many lessons are delivered in Afaan Oromoo with English technical terms where useful.">Eeyyee. Qabiyyee hedduu Afaan Oromoo fi English walitti makuun dhiheessina.</p></details><details><summary data-om="Laptop qabaachuun dirqamaa?" data-en="Do I need a laptop?">Laptop qabaachuun dirqamaa?</summary><p data-om="Koorsaa irratti hundaa'a; Computer Basics fi theory tokko tokko mobile irrattis jalqabuu dandeessa, garuu practical codingf laptop gaarii dha." data-en="It depends on the course. Some basics can start on mobile, but a laptop is recommended for coding practice.">Koorsaa irratti hundaa'a; Computer Basics fi theory tokko tokko mobile irrattis jalqabuu dandeessa, garuu practical codingf laptop gaarii dha.</p></details><details><summary data-om="Akkamittan galmaa'a?" data-en="How do I register?">Akkamittan galmaa'a?</summary><p data-om="Foormii guuti, achiis WhatsApp irratti ergaa galmee kee nuuf ergi." data-en="Complete the form and send the prepared registration message through WhatsApp.">Foormii guuti, achiis WhatsApp irratti ergaa galmee kee nuuf ergi.</p></details></div></section>
 
-  <footer>
-    <p>© <span id="year"></span> Abadir IT Academy. <span data-om="Mirgi hundi eegamaa dha." data-en="All rights reserved.">Mirgi hundi eegamaa dha.</span></p>
-  </footer>
+<section id="contact" class="section contact"><div class="contact-card"><div><p class="eyebrow">📩 CONTACT</p><h2 data-om="Har'a Jalqabi" data-en="Start Today">Har'a Jalqabi</h2><p data-om="Gaaffii, galmee ykn odeeffannoo dabalataaf nu qunnami." data-en="Contact us for registration, questions or more information.">Gaaffii, galmee ykn odeeffannoo dabalataaf nu qunnami.</p></div><div class="contact-buttons"><a class="btn telegram" href="https://t.me/ab11th_technology" target="_blank" rel="noopener noreferrer">✈ Telegram</a><a class="btn whatsapp" id="whatsappLink" href="https://wa.me/251956144830" target="_blank" rel="noopener noreferrer">☏ WhatsApp</a></div></div></section>
+</main>
+<footer><div class="footer-grid"><div><a class="logo" href="#home">Abadir<span>IT</span></a><p data-om="Barnoota IT fi AI salphaa, qabatamaa fi Afaan Oromootiin." data-en="Simple, practical IT and AI education.">Barnoota IT fi AI salphaa, qabatamaa fi Afaan Oromootiin.</p></div><div><h4>Quick Links</h4><a href="#courses">Courses</a><a href="#register">Register</a><a href="#contact">Contact</a></div><div><h4>Follow</h4><a href="https://t.me/ab11th_technology" target="_blank">Telegram</a><a href="#contact">WhatsApp</a></div></div><p class="copyright">© <span id="year"></span> Abadir IT Academy. <span data-om="Mirgi hundi eegamaa dha." data-en="All rights reserved.">Mirgi hundi eegamaa dha.</span></p></footer>
 
-  <script src="script.js"></script>
+<div id="toast" class="toast" role="status"></div>
+<script src="script.js"></script>
 </body>
 </html>
