@@ -1,1 +1,14 @@
-{"name":"abadir-it-academy-backend","version":"1.0.0","private":true,"scripts":{"start":"node server.js"},"dependencies":{"bcryptjs":"^2.4.3","better-sqlite3":"^11.7.0","cors":"^2.8.5","express":"^4.21.2","jsonwebtoken":"^9.0.2"}}
+{
+  "name": "abadir-it-academy-backend",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Abadir IT Academy API with Supabase student storage and protected admin routes",
+  "main": "server.js",
+  "scripts": {"start": "node server.js"},
+  "engines": {"node": ">=18"},
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
