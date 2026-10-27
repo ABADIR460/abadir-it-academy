@@ -1,1 +1,31 @@
-const API='https://YOUR-BACKEND-URL';year.textContent=new Date().getFullYear();menu.onclick=()=>nav.classList.toggle('open');reg.onsubmit=async e=>{e.preventDefault();try{const r=await fetch(API+'/api/students',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(reg)))});const j=await r.json();if(!r.ok)throw Error(j.message);msg.textContent='Registration successful. Student ID: '+j.studentId;msg.style.color='green';reg.reset()}catch(x){msg.textContent='Registration failed: '+x.message;msg.style.color='crimson'}};
+document.addEventListener("DOMContentLoaded", () => {
+  const languageToggle = document.getElementById("languageToggle");
+  const menuToggle = document.getElementById("menuToggle");
+  const navLinks = document.getElementById("navLinks");
+  const year = document.getElementById("year");
+  let language = "en";
+
+  if (year) year.textContent = new Date().getFullYear();
+
+  if (languageToggle) {
+    languageToggle.addEventListener("click", () => {
+      language = language === "en" ? "or" : "en";
+      document.documentElement.lang = language === "en" ? "en" : "om";
+      document.querySelectorAll("[data-en][data-or]").forEach((element) => {
+        element.textContent = element.dataset[language];
+      });
+      languageToggle.textContent = language === "en" ? "Afaan Oromoo" : "English";
+    });
+  }
+
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    });
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => navLinks.classList.remove("open"));
+    });
+  }
+});
