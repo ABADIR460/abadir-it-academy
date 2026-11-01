@@ -1,4 +1,4 @@
-const API = "https://YOUR-RENDER-BACKEND.onrender.com";
+const API = "https://abadir-it-academy-backend.onrender.com";
 const menu=document.getElementById("menu");menu?.addEventListener("click",()=>document.querySelector(".top").classList.toggle("open"));
 const lang=document.getElementById("lang");let oromo=false;
 lang?.addEventListener("click",()=>{oromo=!oromo;lang.textContent=oromo?"English":"Afaan Oromoo";document.querySelector("h1").innerHTML=oromo?"Fuuldura Kee<br><em>Teeknooloojiidhaan Ijaari.</em>":"Build Your Future<br><em>With Technology.</em>";document.querySelector(".hero p").textContent=oromo?"Abadir IT Academy waliin dandeettii kompiitaraa, web development fi teeknooloojii haaraa baradhu.":"Learn computer skills, web development and emerging technologies with Abadir IT Academy.";});
