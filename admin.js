@@ -54,7 +54,7 @@ async function load() {
 
     j.map(s => `
       <tr>
-        <td>${safe(s.full_name)}</td>
+        <td>${safe(s.full_name || s.fullName || s.name || "Name not found")}</td>
         <td>${safe(s.phone)}</td>
         <td>${safe(s.course)}</td>
         <td>${s.created_at ? new Date(s.created_at).toLocaleDateString() : ""}</td>
