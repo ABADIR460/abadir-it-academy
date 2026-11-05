@@ -3,6 +3,25 @@ const cors=require("cors");
 const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
 const {createClient}=require("@supabase/supabase-js");
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 50 * 1024 * 1024
+  },
+  fileFilter: (req, file, cb) => {
+    const allowed = [
+      "application/pdf",
+      "video/mp4",
+      "video/webm"
+    ];
+
+    if (allowed.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only PDF, MP4 and WebM files are allowed"));
+    }
+  }
+});
 const app=express();app.use(cors({origin:"*"}));app.use(express.json());
 const PORT=process.env.PORT||3000;
 const supabaseUrl=process.env.SUPABASE_URL;
