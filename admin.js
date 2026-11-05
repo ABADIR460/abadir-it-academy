@@ -154,3 +154,131 @@ function safe(v) {
 }
 
 document.getElementById("load").addEventListener("click", load);
+// ===== LEARNING MATERIALS SYSTEM =====
+
+const materialType = document.getElementById("materialType");
+const fileArea = document.getElementById("fileArea");
+const youtubeArea = document.getElementById("youtubeArea");
+const materialForm = document.getElementById("materialForm");
+
+materialType.addEventListener("change", () => {
+  const isYoutube = materialType.value === "youtube";
+
+  fileArea.hidden = isYoutube;
+  youtubeArea.hidden = !isYoutube;
+});
+
+materialForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const msg = document.getElementById("materialMsg");
+  const title = document.getElementById("materialTitle").value.trim();
+  const description =
+    document.getElementById("materialDescription").value.trim();
+  const type = materialType.value;
+
+  msg.textContent = "Uploading...";
+
+  try {
+    let response;
+
+    if (type === "youtube") {
+      const youtube_url =
+        document.getElementById("youtubeUrl").value.trim();
+
+      response = await fetch(API + "/api/admin/youtube", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          youtube_url
+        })
+      });
+
+    } else {
+      const file = document.getElementById("materialFile").files[0];
+
+      if (!file) {
+        msg.textContent = "Please select a file.";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("material_type", type);
+      formData.append("file", file);
+
+      response = await fetch(API + "/api/admin/materials", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token
+        },
+        body: formData
+      });
+    }
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Upload failed");
+    }
+
+    msg.textContent = "Material uploaded successfully!";
+    materialForm.reset();
+
+    fileArea.hidden = false;
+    youtubeArea.hidden = true;
+
+    await loadMaterials();
+
+  } catch (error) {
+    msg.textContent = error.message;
+  }
+});
+
+// LOAD MATERIALS
+async function loadMaterials() {
+  const container = document.getElementById("materialsList");
+
+  try {
+    const response = await fetch(API + "/api/materials");
+    const data = await response.json();
+
+    if (!response.ok) throw new Error("Could not load materials");
+
+    if (!data.length) {
+      container.textContent = "No materials uploaded yet.";
+      return;
+    }
+
+    container.innerHTML = data.map(item => {
+      const title = safe(item.title);
+      const description = safe(item.description || "");
+
+      let link = "";
+
+      if (item.material_type === "youtube") {
+        link = `<a href="${safe(item.youtube_url)}" target="_blank" rel="noopener">Watch on YouTube</a>`;
+      } else {
+        link = `<a href="${safe(item.file_url)}" target="_blank" rel="noopener">Open ${safe(item.material_type).toUpperCase()}</a>`;
+      }
+
+      return `
+        <div style="padding:12px;border:1px solid #ddd;margin:10px 0">
+          <h3>${title}</h3>
+          <p>${description}</p>
+          ${link}
+        </div>
+      `;
+    }).join("");
+
+  } catch (error) {
+    container.textContent = error.message;
+  }
+}
+
