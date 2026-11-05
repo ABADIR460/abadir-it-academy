@@ -5,4 +5,48 @@
   onclick="document.getElementById('msg').textContent='Login button works';"
 >
   Login
-</button><p id="msg"></p></form><section id="panel" hidden><h2>Registered Students</h2><button class="btn" id="load">Refresh students</button><p id="count"></p><div style="overflow:auto"><table id="students" style="width:100%;text-align:left;margin-top:18px"></table></div></section></main><script src="./admin.js?v=3"></script></body></html>
+</button><p id="msg"></p></form><section id="panel" hidden><h2>Registered Students</h2><button class="btn" id="load">Refresh students</button><p id="count"></p><div style="overflow:auto"><table id="students" style="width:100%;text-align:left;margin-top:18px"></table></div> 
+<div class="section">
+  <h2>Upload Learning Materials</h2>
+
+  <form id="materialForm">
+    <label>Material Title</label>
+    <input id="materialTitle" type="text"
+      placeholder="Enter lesson title" required>
+
+    <label>Description</label>
+    <textarea id="materialDescription"
+      placeholder="Enter description"></textarea>
+
+    <label>Material Type</label>
+    <select id="materialType" required>
+      <option value="pdf">PDF Notes</option>
+      <option value="video">Video File</option>
+      <option value="youtube">YouTube Video Link</option>
+    </select>
+
+    <div id="fileArea">
+      <label>Select PDF or Video</label>
+      <input id="materialFile" type="file"
+        accept=".pdf,video/mp4,video/webm">
+    </div>
+
+    <div id="youtubeArea" hidden>
+      <label>YouTube URL</label>
+      <input id="youtubeUrl" type="url"
+        placeholder="https://www.youtube.com/watch?v=...">
+    </div>
+
+    <button type="submit" class="btn">
+      Upload Material
+    </button>
+
+    <p id="materialMsg"></p>
+  </form>
+</div>
+
+<div class="section">
+  <h2>Uploaded Materials</h2>
+  <div id="materialsList">Loading...</div>
+</div>
+</section></main><script src="./admin.js?v=3"></script></body></html>
