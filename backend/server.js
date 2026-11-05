@@ -21,4 +21,47 @@ function auth(req,res,next){try{const h=req.headers.authorization||"";const toke
 });
 app.post("/api/admin/login",async(req,res)=>{try{const {username,password}=req.body;if(!JWT_SECRET||!ADMIN_USERNAME||!ADMIN_PASSWORD_HASH)return res.status(503).json({message:"Admin environment variables are missing"});if(username!==ADMIN_USERNAME||!await bcrypt.compare(password,ADMIN_PASSWORD_HASH))return res.status(401).json({message:"Incorrect username or password"});const token=jwt.sign({role:"admin"},JWT_SECRET,{expiresIn:"8h"});res.json({token});}catch(e){res.status(500).json({message:"Login error"});}});
 app.get("/api/students",auth,async(req,res)=>{try{if(!db)return res.status(503).json({message:"Database is not configured"});const {data,error}=await db.from("students").select("*").order("created_at",{ascending:false});if(error)throw error;res.json(data);}catch(e){console.error(e);res.status(500).json({message:"Could not retrieve students"});}});
+// UPDATE STUDENT
+app.put("/api/students/:id", auth, async (req, res) => {
+  try {
+    const { full_name, phone, course } = req.body;
+
+    if (!full_name || !phone || !course) {
+      return res.status(400).json({
+        message: "Name, phone and course are required"
+      });
+    }
+
+    const { data, error } = await db
+      .from("students")
+      .update({ full_name, phone, course })
+      .eq("id", req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.json({ message: "Student updated successfully", student: data });
+  } catch (e) {
+    res.status(500).json({ message: "Could not update student" });
+  }
+});
+
+// DELETE STUDENT
+app.delete("/api/students/:id", auth, async (req, res) => {
+  try {
+    const { data, error } = await db
+      .from("students")
+      .delete()
+      .eq("id", req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.json({ message: "Student deleted successfully" });
+  } catch (e) {
+    res.status(500).json({ message: "Could not delete student" });
+  }
+});
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
