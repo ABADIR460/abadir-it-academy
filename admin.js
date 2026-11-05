@@ -1,4 +1,4 @@
-const API = "https://abadir-it-academy-backend.onrender.com";
+document.getElementById("msg").textContent = "JavaScript is working";const API = "https://abadir-it-academy-backend.onrender.com";
 let token = "";
 
 document.getElementById("login").addEventListener("submit", async (e) => {
