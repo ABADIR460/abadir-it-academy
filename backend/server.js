@@ -167,4 +167,74 @@ app.delete("/api/students/:id", auth, async (req, res) => {
     res.status(500).json({ message: "Could not delete student" });
   }
 });
+// ADD YOUTUBE VIDEO
+app.post("/api/admin/youtube", auth, async (req, res) => {
+  try {
+    const { title, description, youtube_url } = req.body;
+
+    if (!title || !youtube_url) {
+      return res.status(400).json({
+        message: "Title and YouTube URL are required"
+      });
+    }
+
+    const url = new URL(youtube_url);
+
+    const validHost = [
+      "youtube.com",
+      "www.youtube.com",
+      "youtu.be",
+      "m.youtube.com"
+    ];
+
+    if (url.protocol !== "https:" || !validHost.includes(url.hostname)) {
+      return res.status(400).json({
+        message: "Invalid YouTube URL"
+      });
+    }
+
+    const { data, error } = await db
+      .from("learning_materials")
+      .insert([{
+        title,
+        description: description || null,
+        material_type: "youtube",
+        youtube_url
+      }])
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.status(201).json({
+      message: "YouTube video added successfully",
+      material: data
+    });
+
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      message: "Could not add YouTube video"
+    });
+  }
+});
+
+// PUBLIC MATERIALS LIST
+app.get("/api/materials", async (req, res) => {
+  try {
+    const { data, error } = await db
+      .from("learning_materials")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    res.json(data);
+  } catch (e) {
+    res.status(500).json({
+      message: "Could not load materials"
+    });
+  }
+});
+
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
