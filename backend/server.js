@@ -3,6 +3,7 @@ const cors=require("cors");
 const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
 const {createClient}=require("@supabase/supabase-js");
+const multer = require("multer");
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
