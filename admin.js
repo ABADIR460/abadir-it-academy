@@ -239,8 +239,7 @@ materialForm.addEventListener("submit", async (e) => {
   } catch (error) {
     msg.textContent = error.message;
   }
-});
-
+})
 // LOAD MATERIALS
 async function loadMaterials() {
   const container = document.getElementById("materialsList");
@@ -273,6 +272,9 @@ async function loadMaterials() {
           <h3>${title}</h3>
           <p>${description}</p>
           ${link}
+          <br><br>
+          <button onclick="editMaterial('${item.id}')">Edit</button>
+          <button onclick="deleteMaterial('${item.id}')">Delete</button>
         </div>
       `;
     }).join("");
@@ -282,3 +284,57 @@ async function loadMaterials() {
   }
 }
 
+
+// EDIT MATERIAL
+async function editMaterial(id) {
+  const title = prompt("Enter new material title:");
+  if (title === null || !title.trim()) return;
+
+  const description = prompt("Enter new description:") || "";
+
+  try {
+    const response = await fetch(API + "/api/admin/materials/" + encodeURIComponent(id), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ title, description })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) throw new Error(result.message);
+
+    alert("Material updated successfully!");
+    await loadMaterials();
+
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+
+// DELETE MATERIAL
+async function deleteMaterial(id) {
+  if (!confirm("Are you sure you want to delete this material?")) return;
+
+  try {
+    const response = await fetch(API + "/api/admin/materials/" + encodeURIComponent(id), {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) throw new Error(result.message);
+
+    alert("Material deleted successfully!");
+    await loadMaterials();
+
+  } catch (error) {
+    alert(error.message);
+  }
+}
