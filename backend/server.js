@@ -235,6 +235,101 @@ app.get("/api/materials", async (req, res) => {
       message: "Could not load materials"
     });
   }
+});// EDIT LEARNING MATERIAL
+app.put("/api/admin/materials/:id", auth, async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(503).json({
+        message: "Database is not configured"
+      });
+    }
+
+    const { title, description } = req.body;
+
+    if (!title || !title.trim()) {
+      return res.status(400).json({
+        message: "Material title is required"
+      });
+    }
+
+    const { data, error } = await db
+      .from("learning_materials")
+      .update({
+        title: title.trim(),
+        description: description || null
+      })
+      .eq("id", req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.json({
+      message: "Material updated successfully",
+      material: data
+    });
+
+  } catch (e) {
+    console.error("Edit material error:", e);
+    res.status(500).json({
+      message: "Could not update material"
+    });
+  }
+});
+
+
+// DELETE LEARNING MATERIAL
+app.delete("/api/admin/materials/:id", auth, async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(503).json({
+        message: "Database is not configured"
+      });
+    }
+
+    const { data, error } = await db
+      .from("learning_materials")
+      .select("*")
+      .eq("id", req.params.id)
+      .single();
+
+    if (error) throw error;
+
+    // Remove uploaded file from Supabase Storage
+    if (data.file_url) {
+      const marker = "/storage/v1/object/public/academy-materials/";
+      const position = data.file_url.indexOf(marker);
+
+      if (position !== -1) {
+        const filePath = decodeURIComponent(
+          data.file_url.substring(position + marker.length)
+        );
+
+        const { error: storageError } = await db.storage
+          .from("academy-materials")
+          .remove([filePath]);
+
+        if (storageError) throw storageError;
+      }
+    }
+
+    const { error: deleteError } = await db
+      .from("learning_materials")
+      .delete()
+      .eq("id", req.params.id);
+
+    if (deleteError) throw deleteError;
+
+    res.json({
+      message: "Material deleted successfully"
+    });
+
+  } catch (e) {
+    console.error("Delete material error:", e);
+    res.status(500).json({
+      message: "Could not delete material"
+    });
+  }
 });
 
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
