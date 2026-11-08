@@ -330,6 +330,167 @@ app.delete("/api/admin/materials/:id", auth, async (req, res) => {
       message: "Could not delete material"
     });
   }
+});// ================= ONLINE EXAMS =================
+
+// Admin: Create exam
+app.post("/api/admin/exams", auth, async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ message: "Database not configured" });
+    }
+
+    const { title, description, duration_minutes } = req.body;
+
+    if (!title || !duration_minutes) {
+      return res.status(400).json({ message: "Title and duration are required" });
+    }
+
+    const { data, error } = await db
+      .from("exams")
+      .insert([{
+        title,
+        description,
+        duration_minutes,
+        is_published: false
+      }])
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.json({ message: "Exam created successfully", exam: data });
+  } catch (e) {
+    console.error("Create exam error:", e);
+    res.status(500).json({ message: "Could not create exam" });
+  }
+});
+
+// Admin: Add question
+app.post("/api/admin/exams/:id/questions", auth, async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ message: "Database not configured" });
+    }
+
+    const { question, options, correct_answer } = req.body;
+
+    if (!question || !options || !correct_answer) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const { data, error } = await db
+      .from("exam_questions")
+      .insert([{
+        exam_id: req.params.id,
+        question,
+        options,
+        correct_answer
+      }])
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.json({ message: "Question added successfully", question: data });
+  } catch (e) {
+    console.error("Add question error:", e);
+    res.status(500).json({ message: "Could not add question" });
+  }
+});
+
+// Public: List published exams
+app.get("/api/exams", async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ message: "Database not configured" });
+    }
+
+    const { data, error } = await db
+      .from("exams")
+      .select("id,title,description,duration_minutes,created_at")
+      .eq("is_published", true);
+
+    if (error) throw error;
+
+    res.json(data);
+  } catch (e) {
+    console.error("List exams error:", e);
+    res.status(500).json({ message: "Could not load exams" });
+  }
+});
+
+// Public: Get questions WITHOUT correct answers
+app.get("/api/exams/:id/questions", async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ message: "Database not configured" });
+    }
+
+    const { data, error } = await db
+      .from("exam_questions")
+      .select("id,question,options")
+      .eq("exam_id", req.params.id);
+
+    if (error) throw error;
+
+    res.json(data);
+  } catch (e) {
+    console.error("Load exam questions error:", e);
+    res.status(500).json({ message: "Could not load questions" });
+  }
+});
+
+// Public: Submit exam and mark answers on server
+app.post("/api/exams/:id/submit", async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ message: "Database not configured" });
+    }
+
+    const { student_name, answers } = req.body;
+
+    if (!student_name || !Array.isArray(answers)) {
+      return res.status(400).json({ message: "Student name and answers are required" });
+    }
+
+    const { data: questions, error: qError } = await db
+      .from("exam_questions")
+      .select("id,correct_answer")
+      .eq("exam_id", req.params.id);
+
+    if (qError) throw qError;
+    if (!questions || questions.length === 0) {
+      return res.status(404).json({ message: "No questions found" });
+    }
+
+    const answerMap = new Map(
+      answers.map(a => [String(a.question_id), String(a.answer)])
+    );
+
+    const score = questions.reduce((total, q) => {
+      return total + (answerMap.get(String(q.id)) === String(q.correct_answer) ? 1 : 0);
+    }, 0);
+
+    const { error: saveError } = await db
+      .from("exam_attempts")
+      .insert([{
+        exam_id: req.params.id,
+        student_name: student_name.trim(),
+        score,
+        total_questions: questions.length
+      }]);
+
+    if (saveError) throw saveError;
+
+    res.json({
+      message: "Exam submitted successfully",
+      score,
+      total_questions: questions.length
+    });
+  } catch (e) {
+    console.error("Submit exam error:", e);
+    res.status(500).json({ message: "Could not submit exam" });
+  }
 });
 
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
