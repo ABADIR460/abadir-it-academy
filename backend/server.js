@@ -515,6 +515,29 @@ app.patch("/api/admin/exams/:id/publish", auth, async (req, res) => {
     console.error("Publish exam error:", e);
     res.status(500).json({ message: "Could not publish exam" });
   }
+});// ADMIN: LIST ALL EXAMS
+app.get("/api/admin/exams", auth, async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({
+        message: "Database not configured"
+      });
+    }
+
+    const { data, error } = await db
+      .from("exams")
+      .select("id,title,description,duration_minutes,is_published,created_at")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    res.json(data);
+  } catch (e) {
+    console.error("Admin exam list error:", e);
+    res.status(500).json({
+      message: "Could not load exams"
+    });
+  }
 });
 
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
