@@ -491,6 +491,30 @@ app.post("/api/exams/:id/submit", async (req, res) => {
     console.error("Submit exam error:", e);
     res.status(500).json({ message: "Could not submit exam" });
   }
+});// Admin: Publish exam
+app.patch("/api/admin/exams/:id/publish", auth, async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({ message: "Database not configured" });
+    }
+
+    const { data, error } = await db
+      .from("exams")
+      .update({ is_published: true })
+      .eq("id", req.params.id)
+      .select("id,title,is_published")
+      .single();
+
+    if (error) throw error;
+
+    res.json({
+      message: "Exam published successfully",
+      exam: data
+    });
+  } catch (e) {
+    console.error("Publish exam error:", e);
+    res.status(500).json({ message: "Could not publish exam" });
+  }
 });
 
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
