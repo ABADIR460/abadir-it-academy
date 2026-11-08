@@ -1,1 +1,81 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Student Area | Abadir IT Academy</title><link rel="stylesheet" href="style.css"></head><body><header class="top"><a class="brand" href="index.html"><span class="logo">A</span>Abadir <b>IT Academy</b></a><a class="btn" href="index.html">Home</a></header><main class="section"><div class="heading"><span class="tag">STUDENT LEARNING AREA</span><h2>Student Dashboard</h2><p>Learning materials and practice activities.</p></div><div class="cards"><article class="card"><div class="emoji">🎬</div><h3>Video Lessons</h3><p>Video links will appear here when published by the academy.</p></article><article class="card"><div class="emoji">📚</div><h3>Study Notes</h3><p>Lesson notes and downloadable files will appear here.</p></article><article class="card" id="exam"><div class="emoji">📝</div><h3>Practice Exam</h3><p>What does CPU stand for?</p><form id="quiz"><label><input type="radio" name="answer" value="a" required> Central Processing Unit</label><label><input type="radio" name="answer" value="b"> Computer Personal Unit</label><button class="btn" style="margin-top:15px">Check answer</button><p id="result"></p></form></article></div></main><script>document.getElementById('quiz').addEventListener('submit',e=>{e.preventDefault();document.getElementById('result').textContent=new FormData(e.target).get('answer')==='a'?'Correct!':'Try again.'});</script></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Dashboard | Abadir IT Academy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="index.html">
+    <span class="logo">A</span>
+    Abadir <b>IT Academy</b>
+  </a>
+  <a class="btn" href="index.html">Home</a>
+</header>
+
+<main class="section">
+
+  <div class="heading">
+    <span class="tag">STUDENT LEARNING AREA</span>
+    <h2>Student Dashboard</h2>
+    <p>Learning materials and practice activities.</p>
+  </div>
+
+  <section class="section">
+    <div class="heading">
+      <h2>📚 Learning Materials</h2>
+      <p>Access your notes and video lessons.</p>
+    </div>
+
+    <div id="materialsList">
+      Loading learning materials...
+    </div>
+  </section>
+
+  <div class="cards">
+    <article class="card" id="exam">
+      <div class="emoji">📝</div>
+      <h3>Practice Exam</h3>
+      <p>What does CPU stand for?</p>
+
+      <form id="quiz">
+        <label>
+          <input type="radio" name="answer" value="a" required>
+          Central Processing Unit
+        </label>
+
+        <label>
+          <input type="radio" name="answer" value="b">
+          Computer Personal Unit
+        </label>
+
+        <button class="btn" style="margin-top:15px">
+          Check answer
+        </button>
+
+        <p id="result"></p>
+      </form>
+    </article>
+  </div>
+
+</main>
+
+<script src="materials.js"></script>
+
+<script>
+document.getElementById('quiz').addEventListener('submit', e => {
+  e.preventDefault();
+
+  document.getElementById('result').textContent =
+    new FormData(e.target).get('answer') === 'a'
+      ? 'Correct!'
+      : 'Try again.';
+});
+</script>
+
+</body>
+</html>
