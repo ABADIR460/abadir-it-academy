@@ -338,3 +338,152 @@ async function deleteMaterial(id) {
     alert(error.message);
   }
 }
+// ================= ONLINE EXAM MANAGEMENT =================
+
+const examForm = document.getElementById("examForm");
+const examSelect = document.getElementById("examSelect");
+const examMsg = document.getElementById("examMsg");
+const questionForm = document.getElementById("questionForm");
+const questionMsg = document.getElementById("questionMsg");
+const publishExamBtn = document.getElementById("publishExam");
+
+// Load exams
+async function loadExams() {
+  try {
+    const response = await fetch(API + "/api/admin/exams", {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    });
+
+    const exams = await response.json();
+    if (!response.ok) throw new Error(exams.message);
+
+    examSelect.innerHTML = '<option value="">Select Exam</option>';
+
+    exams.forEach(exam => {
+      const option = document.createElement("option");
+      option.value = exam.id;
+      option.textContent = exam.title +
+        (exam.is_published ? " (Published)" : " (Draft)");
+      examSelect.appendChild(option);
+    });
+
+  } catch (error) {
+    examMsg.textContent = error.message;
+  }
+}
+
+// Create exam
+if (examForm) {
+  examForm.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(API + "/api/admin/exams", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({
+          title: document.getElementById("examTitle").value,
+          description: document.getElementById("examDescription").value,
+          duration_minutes: Number(
+            document.getElementById("examDuration").value
+          )
+        })
+      });
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message);
+
+      examMsg.textContent = "Exam created successfully!";
+      examForm.reset();
+      await loadExams();
+
+    } catch (error) {
+      examMsg.textContent = error.message;
+    }
+  });
+}
+
+// Add question
+if (questionForm) {
+  questionForm.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const examId = examSelect.value;
+    if (!examId) {
+      questionMsg.textContent = "Please select an exam.";
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        API + "/api/admin/exams/" + encodeURIComponent(examId) + "/questions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+          },
+          body: JSON.stringify({
+            question: document.getElementById("examQuestion").value,
+            options: {
+              A: document.getElementById("optionA").value,
+              B: document.getElementById("optionB").value,
+              C: document.getElementById("optionC").value,
+              D: document.getElementById("optionD").value
+            },
+            correct_answer: document.getElementById("correctAnswer").value
+          })
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message);
+
+      questionMsg.textContent = "Question added successfully!";
+      questionForm.reset();
+
+    } catch (error) {
+      questionMsg.textContent = error.message;
+    }
+  });
+}
+
+// Publish exam
+if (publishExamBtn) {
+  publishExamBtn.addEventListener("click", async function() {
+    const examId = examSelect.value;
+
+    if (!examId) {
+      examMsg.textContent = "Please select an exam.";
+      return;
+    }
+
+    if (!confirm("Publish this exam for students?")) return;
+
+    try {
+      const response = await fetch(
+        API + "/api/admin/exams/" + encodeURIComponent(examId) + "/publish",
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message);
+
+      examMsg.textContent = "Exam published successfully!";
+      await loadExams();
+
+    } catch (error) {
+      examMsg.textContent = error.message;
+    }
+  });
+}
