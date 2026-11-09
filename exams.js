@@ -223,5 +223,6 @@ async function submitExam(autoSubmit) {
   }
 }
 
-// LOAD EXAMS WHEN PAGE OPENS
+// TEST SCRIPT
+document.getElementById("examStatus").textContent = "JavaScript is working!";
 loadExams();
