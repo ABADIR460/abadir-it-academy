@@ -73,17 +73,6 @@
 </main>
 
 <script src="materials.js"></script>
-
-<script>
-document.getElementById('quiz').addEventListener('submit', e => {
-  e.preventDefault();
-
-  document.getElementById('result').textContent =
-    new FormData(e.target).get('answer') === 'a'
-      ? 'Correct!'
-      : 'Try again.';
-});
-</script>
-
+<script src="exams.js"></script>
 </body>
 </html>
