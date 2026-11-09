@@ -26,6 +26,7 @@ document.getElementById("login").addEventListener("submit", async (e) => {
     document.getElementById("panel").hidden = false;
 
     await load();
+  await loadExams();  
   } catch (x) {
     msg.textContent = x.message;
   }
