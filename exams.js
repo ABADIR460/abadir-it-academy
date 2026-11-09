@@ -1,5 +1,4 @@
 const API = "https://abadir-it-academy-backend.onrender.com";
-
 let activeExam = null;
 let questions = [];
 let timerInterval = null;
@@ -28,7 +27,6 @@ async function loadExams() {
       button.className = "btn";
       button.textContent =
         exam.title + " (" + exam.duration_minutes + " minutes)";
-
       button.style.margin = "8px";
 
       button.addEventListener("click", () => startExam(exam));
