@@ -1,4 +1,3 @@
-
 const API = "https://abadir-it-academy-backend.onrender.com";
 
 let activeExam = null;
