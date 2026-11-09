@@ -38,28 +38,36 @@
 
   <div class="cards">
     <article class="card" id="exam">
-      <div class="emoji">📝</div>
-      <h3>Practice Exam</h3>
-      <p>What does CPU stand for?</p>
+  <div class="emoji">📝</div>
+  <h3>Online Examinations</h3>
+  <p>Choose an exam and test your knowledge.</p>
 
-      <form id="quiz">
-        <label>
-          <input type="radio" name="answer" value="a" required>
-          Central Processing Unit
-        </label>
+  <div id="examArea">
+    <p id="examStatus">Loading available exams...</p>
 
-        <label>
-          <input type="radio" name="answer" value="b">
-          Computer Personal Unit
-        </label>
+    <div id="examList"></div>
 
-        <button class="btn" style="margin-top:15px">
-          Check answer
-        </button>
+    <div id="examPaper" hidden>
+      <h3 id="activeExamTitle"></h3>
+      <p id="examTimer"></p>
 
-        <p id="result"></p>
+      <label>Your Name</label>
+      <input
+        type="text"
+        id="studentExamName"
+        placeholder="Enter your name"
+        required
+      >
+
+      <form id="onlineExamForm">
+        <div id="examQuestions"></div>
+        <button class="btn" type="submit">Submit Exam</button>
       </form>
-    </article>
+    </div>
+
+    <p id="examResult"></p>
+  </div>
+</article>
   </div>
 
 </main>
