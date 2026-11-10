@@ -539,5 +539,7 @@ app.get("/api/admin/exams", auth, async (req, res) => {
     });
   }
 });
-
+app.get("/", (req, res) => {
+  res.send("Abadir IT Academy backend is running");
+});
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
