@@ -499,11 +499,9 @@ async function loadExamResults() {
       "https://abadir-it-academy-backend.onrender.com/api/admin/exam-attempts",
       {
         headers: {
-          "Authorization": "Bearer " +
-            localStorage.getItem("adminToken")
-        }
-      }
-    );
+  "Authorization": "Bearer " + token
+}
+   });
 
     if (!response.ok) {
   const errorText = await response.text();
