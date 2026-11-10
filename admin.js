@@ -505,8 +505,12 @@ async function loadExamResults() {
     );
 
     if (!response.ok) {
-      throw new Error("Could not load results");
-    }
+  const errorText = await response.text();
+  list.innerHTML =
+    "Server Error: " + response.status +
+    "<br>" + errorText;
+  return;
+}
 
     const results = await response.json();
 
