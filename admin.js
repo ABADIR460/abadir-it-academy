@@ -22,6 +22,7 @@ document.getElementById("login").addEventListener("submit", async (e) => {
     if (!r.ok) throw Error(j.message || "Login failed");
 
     token = j.token;
+localStorage.setItem("adminToken", j.token);
     document.getElementById("login").hidden = true;
     document.getElementById("panel").hidden = false;
 
