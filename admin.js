@@ -488,3 +488,54 @@ if (publishExamBtn) {
     }
   });
 }
+async function loadExamResults() {
+  const list = document.getElementById("examResultsList");
+
+  list.innerHTML = "Loading results...";
+
+  try {
+    const response = await fetch(
+      "https://abadir-it-academy-backend.onrender.com/api/admin/exam-attempts",
+      {
+        headers: {
+          "Authorization": "Bearer " +
+            localStorage.getItem("adminToken")
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Could not load results");
+    }
+
+    const results = await response.json();
+
+    if (!results.length) {
+      list.innerHTML = "No exam results yet.";
+      return;
+    }
+
+    list.innerHTML = results.map(result => `
+      <div class="card">
+        <h3>${escapeResult(result.student_name)}</h3>
+        <p>Score: ${result.score} / ${result.total_questions}</p>
+        <p>Submitted: ${
+          new Date(result.submitted_at).toLocaleString()
+        }</p>
+      </div>
+    `).join("");
+
+  } catch (error) {
+    list.innerHTML = "Error: " + error.message;
+  }
+}
+
+function escapeResult(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
