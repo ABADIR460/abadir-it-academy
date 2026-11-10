@@ -45,8 +45,10 @@ async function startExam(exam) {
   result.textContent = "";
 
   try {
-    const response = await fetch(EXAM_API + "/api/exams");+ encodeURIComponent(exam.id) + "/questions"
-    );
+    const response = await fetch(
+  EXAM_API + "/api/exams/" +
+  encodeURIComponent(exam.id) + "/questions"
+);
 
     const data = await response.json();
 
@@ -186,8 +188,10 @@ async function submitExam(autoSubmit) {
     };
   });
 
-  try {const response = await fetch(EXAM_API + "/api/exams"); + encodeURIComponent(activeExam.id) + "/submit",
-      {
+  try {
+  const response = await fetch(
+    EXAM_API + "/api/exams/" +
+    encodeURIComponent(activeExam.id) + "/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
