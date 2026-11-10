@@ -354,8 +354,8 @@ async function loadExams() {
   try {
     const response = await fetch(API + "/api/admin/exams", {
       headers: {
-        Authorization: "Bearer " + token
-      }
+  "Authorization": "Bearer " + token
+  }
     });
 
     const exams = await response.json();
