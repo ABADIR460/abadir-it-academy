@@ -12,7 +12,7 @@ async function loadExams() {
   const status = document.getElementById("examStatus");
 
   try {
-    const response = await fetch(API + "/api/exams");
+    const response = await fetch(EXAM_API + "/api/exams");
     const exams = await response.json();
 
     if (!response.ok) throw new Error("Could not load exams");
@@ -45,8 +45,7 @@ async function startExam(exam) {
   result.textContent = "";
 
   try {
-    const response = await fetch(
-      API + "/api/exams/" + encodeURIComponent(exam.id) + "/questions"
+    const response = await fetch(EXAM_API + "/api/exams");+ encodeURIComponent(exam.id) + "/questions"
     );
 
     const data = await response.json();
@@ -187,9 +186,7 @@ async function submitExam(autoSubmit) {
     };
   });
 
-  try {
-    const response = await fetch(
-      API + "/api/exams/" + encodeURIComponent(activeExam.id) + "/submit",
+  try {const response = await fetch(EXAM_API + "/api/exams"); + encodeURIComponent(activeExam.id) + "/submit",
       {
         method: "POST",
         headers: {
