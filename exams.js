@@ -220,9 +220,12 @@ async function submitExam(autoSubmit) {
     result.textContent = error.message;
   } finally {
     submitting = false;
-  }
+  
 }
 
 // TEST SCRIPT
 document.getElementById("examStatus").textContent = "JavaScript is working!";
-loadExams();
+loadExams().catch(error => {
+  document.getElementById("examStatus").textContent =
+    "Error: " + error.message;
+});
