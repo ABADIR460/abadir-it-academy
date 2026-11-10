@@ -542,4 +542,28 @@ app.get("/api/admin/exams", auth, async (req, res) => {
 app.get("/", (req, res) => {
   res.send("Abadir IT Academy backend is running");
 });
+// ADMIN: VIEW EXAM RESULTS
+app.get("/api/admin/exam-attempts", auth, async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(500).json({
+        message: "Database not configured"
+      });
+    }
+
+    const { data, error } = await db
+      .from("exam_attempts")
+      .select("*")
+      .order("submitted_at", { ascending: false });
+
+    if (error) throw error;
+
+    res.json(data);
+  } catch (error) {
+    console.error("Load exam results error:", error);
+    res.status(500).json({
+      message: "Could not load exam results"
+    });
+  }
+});
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
