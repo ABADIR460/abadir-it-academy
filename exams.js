@@ -1,4 +1,4 @@
-const API = "https://abadir-it-academy-backend.onrender.com";
+const EXAM_API = "https://abadir-it-academy-backend.onrender.com";
 let activeExam = null;
 let questions = [];
 let timerInterval = null;
