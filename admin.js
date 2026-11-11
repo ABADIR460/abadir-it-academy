@@ -87,7 +87,8 @@ function render() {
         <td>${s.created_at ? new Date(s.created_at).toLocaleDateString() : ""}</td>
         <td>
           <button type="button" onclick="editStudent('${safe(s.id)}')">Edit</button>
-          <button type="button" onclick="deleteStudent('${safe(s.id)}')">Delete</button>
+<button type="button" onclick="resetStudentPassword('${safe(s.id)}')">Reset Password</button>
+<button type="button" onclick="deleteStudent('${safe(s.id)}')">Delete</button>
         </td>
       </tr>
     `).join("");
@@ -156,6 +157,45 @@ function safe(v) {
 }
 
 document.getElementById("load").addEventListener("click", load);
+async function resetStudentPassword(id) {
+  const password = prompt(
+    "Enter a new password for this student (minimum 8 characters):"
+  );
+
+  if (password === null) return;
+
+  if (password.length < 8) {
+    alert("Password must be at least 8 characters.");
+    return;
+  }
+
+  if (!confirm("Reset this student's password?")) return;
+
+  try {
+    const r = await fetch(
+      API + "/api/admin/students/" +
+      encodeURIComponent(id) + "/password",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({ password })
+      }
+    );
+
+    const j = await r.json();
+
+    if (!r.ok) throw Error(j.message || "Password reset failed");
+
+    alert("Student password updated successfully!");
+
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
 // ===== LEARNING MATERIALS SYSTEM =====
 
 const materialType = document.getElementById("materialType");
