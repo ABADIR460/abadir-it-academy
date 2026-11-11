@@ -103,11 +103,18 @@ app.post("/api/students", async (req, res) => {
     });
   }
 });
+
 app.post("/api/student/login", async (req, res) => {
   try {
     if (!db) {
       return res.status(503).json({
         message: "Database is not configured"
+      });
+    }
+
+    if (!JWT_SECRET) {
+      return res.status(503).json({
+        message: "Login configuration missing"
       });
     }
 
@@ -122,25 +129,39 @@ app.post("/api/student/login", async (req, res) => {
     const { data, error } = await db
       .from("students")
       .select("id, full_name, phone, course, password_hash")
-      .eq("phone", phone.trim())
-      .maybeSingle();
+      .eq("phone", phone.trim());
 
     if (error) throw error;
 
-    if (
-      !data ||
-      !data.password_hash ||
-      !(await bcrypt.compare(password, data.password_hash))
-    ) {
+    const matches = [];
+
+    for (const student of (data || [])) {
+      if (
+        student.password_hash &&
+        await bcrypt.compare(password, student.password_hash)
+      ) {
+        matches.push(student);
+      }
+    }
+
+    if (matches.length === 0) {
       return res.status(401).json({
         message: "Incorrect phone or password"
       });
     }
 
+    if (matches.length > 1) {
+      return res.status(409).json({
+        message: "Multiple accounts found. Contact the academy admin."
+      });
+    }
+
+    const student = matches[0];
+
     const token = jwt.sign(
       {
         role: "student",
-        studentId: data.id
+        studentId: student.id
       },
       JWT_SECRET,
       { expiresIn: "8h" }
@@ -149,10 +170,10 @@ app.post("/api/student/login", async (req, res) => {
     res.json({
       token,
       student: {
-        id: data.id,
-        full_name: data.full_name,
-        phone: data.phone,
-        course: data.course
+        id: student.id,
+        full_name: student.full_name,
+        phone: student.phone,
+        course: student.course
       }
     });
 
@@ -164,6 +185,7 @@ app.post("/api/student/login", async (req, res) => {
     });
   }
 });
+
 function auth(req,res,next){try{const h=req.headers.authorization||"";const token=h.startsWith("Bearer ")?h.slice(7):"";req.admin=jwt.verify(token,JWT_SECRET);next();}catch{return res.status(401).json({message:"Unauthorized"});}}console.log("ADMIN CONFIG CHECK:", {
   JWT_SECRET: !!process.env.JWT_SECRET,
   ADMIN_USERNAME: !!process.env.ADMIN_USERNAME,
