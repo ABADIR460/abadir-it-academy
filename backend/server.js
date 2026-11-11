@@ -88,7 +88,12 @@ app.post("/api/students", async (req, res) => {
 
     res.status(201).json({
       message: "Registration successful",
-      student: data
+      student: {
+  id: data.id,
+  full_name: data.full_name,
+  phone: data.phone,
+  course: data.course
+}
     });
 
   } catch (e) {
