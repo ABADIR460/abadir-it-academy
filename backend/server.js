@@ -103,7 +103,67 @@ app.post("/api/students", async (req, res) => {
     });
   }
 });
+app.post("/api/student/login", async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(503).json({
+        message: "Database is not configured"
+      });
+    }
 
+    const { phone, password } = req.body;
+
+    if (!phone || !password) {
+      return res.status(400).json({
+        message: "Phone and password are required"
+      });
+    }
+
+    const { data, error } = await db
+      .from("students")
+      .select("id, full_name, phone, course, password_hash")
+      .eq("phone", phone.trim())
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (
+      !data ||
+      !data.password_hash ||
+      !(await bcrypt.compare(password, data.password_hash))
+    ) {
+      return res.status(401).json({
+        message: "Incorrect phone or password"
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        role: "student",
+        studentId: data.id
+      },
+      JWT_SECRET,
+      { expiresIn: "8h" }
+    );
+
+    res.json({
+      token,
+      student: {
+        id: data.id,
+        full_name: data.full_name,
+        phone: data.phone,
+        course: data.course
+      }
+    });
+
+  } catch (error) {
+    console.error("Student login error:", error);
+
+    res.status(500).json({
+      message: "Student login failed"
+    });
+  }
+});
 function auth(req,res,next){try{const h=req.headers.authorization||"";const token=h.startsWith("Bearer ")?h.slice(7):"";req.admin=jwt.verify(token,JWT_SECRET);next();}catch{return res.status(401).json({message:"Unauthorized"});}}console.log("ADMIN CONFIG CHECK:", {
   JWT_SECRET: !!process.env.JWT_SECRET,
   ADMIN_USERNAME: !!process.env.ADMIN_USERNAME,
