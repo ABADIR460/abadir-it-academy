@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login | Abadir IT Academy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <section class="section register">
+    <div class="heading">
+      <h2>Student Login</h2>
+      <p>Enter your phone number and password.</p>
+    </div>
+
+    <form id="studentLogin">
+      <label>Phone Number</label>
+      <input
+        type="tel"
+        name="phone"
+        placeholder="+251..."
+        required
+      >
+
+      <label>Password</label>
+      <input
+        type="password"
+        name="password"
+        placeholder="Enter your password"
+        required
+      >
+
+      <button class="btn" type="submit">Login</button>
+      <p id="loginMessage" class="message"></p>
+    </form>
+
+    <p>Don't have an account?
+      <a href="index.html#register">Register here</a>
+    </p>
+  </section>
+
+  <script src="student-login.js"></script>
+</body>
+</html>
