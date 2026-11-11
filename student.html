@@ -34,26 +34,7 @@
     <div id="materialsList">
       Loading learning materials...
     </div>
-  </section><section class="card" id="examHistory">
-  <h2>📊 My Exam History</h2>
-
-  <label for="historyName">Your Name</label>
-  <input
-    type="text"
-    id="historyName"
-    placeholder="Enter your name"
-  >
-
-  <button
-    class="btn"
-    type="button"
-    onclick="loadStudentHistory()"
-  >
-    View My Results
-  </button>
-
-  <div id="historyResults"></div>
-</section>
+  </section>
 
   <div class="cards">
     <article class="card" id="exam">
@@ -90,7 +71,26 @@
   </div>
 
 </main>
+<section class="card" id="examHistory">
+  <h2>📊 My Exam History</h2>
 
+  <label for="historyName">Your Name</label>
+  <input
+    type="text"
+    id="historyName"
+    placeholder="Enter your name"
+  >
+
+  <button
+    class="btn"
+    type="button"
+    onclick="loadStudentHistory()"
+  >
+    View My Results
+  </button>
+
+  <div id="historyResults"></div>
+</section>
 <<script src="materials.js"></script>
 <script src="exams.js?v=4"></script>
 </body>
