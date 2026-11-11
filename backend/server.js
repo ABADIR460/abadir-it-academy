@@ -565,5 +565,36 @@ app.get("/api/admin/exam-attempts", auth, async (req, res) => {
       message: "Could not load exam results"
     });
   }
+});app.get("/api/student/exam-history", async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(503).json({
+        message: "Database is not configured"
+      });
+    }
+
+    const studentName = String(req.query.name || "").trim();
+
+    if (!studentName) {
+      return res.status(400).json({
+        message: "Student name is required"
+      });
+    }
+
+    const { data, error } = await db
+      .from("exam_attempts")
+      .select("exam_id, student_name, score, total_questions, submitted_at")
+      .ilike("student_name", studentName)
+      .order("submitted_at", { ascending: false });
+
+    if (error) throw error;
+
+    res.json(data);
+  } catch (error) {
+    console.error("Exam history error:", error);
+    res.status(500).json({
+      message: "Could not load exam history"
+    });
+  }
 });
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
