@@ -230,4 +230,54 @@ async function submitExam(autoSubmit) {
 loadExams().catch(error => {
   document.getElementById("examStatus").textContent =
     "Error: " + error.message;
-});
+});async function loadStudentHistory() {
+  const name = document.getElementById("historyName").value.trim();
+  const results = document.getElementById("historyResults");
+
+  if (!name) {
+    results.textContent = "Please enter your name.";
+    return;
+  }
+
+  results.textContent = "Loading your exam history...";
+
+  try {
+    const response = await fetch(
+      EXAM_API + "/api/student/exam-history?name=" +
+      encodeURIComponent(name)
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Could not load history");
+    }
+
+    if (!data.length) {
+      results.textContent = "No exam history found.";
+      return;
+    }
+
+    results.innerHTML = data.map(item => `
+      <div class="card">
+        <h3>Exam ID: ${escapeHistory(item.exam_id)}</h3>
+        <p>Student: ${escapeHistory(item.student_name)}</p>
+        <p>Score: ${Number(item.score)} / ${Number(item.total_questions)}</p>
+        <p>Date: ${new Date(item.submitted_at).toLocaleString()}</p>
+      </div>
+    `).join("");
+
+  } catch (error) {
+    results.textContent = "Error: " + error.message;
+  }
+}
+
+function escapeHistory(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
