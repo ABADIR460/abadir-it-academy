@@ -35,7 +35,70 @@ const ADMIN_PASSWORD_HASH=process.env.ADMIN_PASSWORD_HASH;
 const db=supabaseUrl&&supabaseKey?createClient(supabaseUrl,supabaseKey):null;
 app.get("/",(req,res)=>res.json({message:"Abadir IT Academy backend is running"}));
 app.get("/api/health",(req,res)=>res.json({status:"OK",database:db?"configured":"missing environment variables"}));
-app.post("/api/students",async(req,res)=>{try{if(!db)return res.status(503).json({message:"Database is not configured"});const {fullName,phone,email,gender,course,educationLevel,telegram}=req.body;if(!fullName||!phone||!course)return res.status(400).json({message:"Full name, phone and course are required"});const {data,error}=await db.from("students").insert([{full_name:fullName,phone,email:email||null,gender:gender||null,course,education_level:educationLevel||null,telegram:telegram||null}]).select().single();if(error)throw error;res.status(201).json({message:"Registration successful",student:data});}catch(e){console.error(e);res.status(500).json({message:"Could not save registration"});}});
+
+app.post("/api/students", async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(503).json({
+        message: "Database is not configured"
+      });
+    }
+
+    const {
+      fullName,
+      phone,
+      email,
+      gender,
+      course,
+      educationLevel,
+      telegram,
+      password
+    } = req.body;
+
+    if (!fullName || !phone || !course || !password) {
+      return res.status(400).json({
+        message: "Name, phone, course and password are required"
+      });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({
+        message: "Password must be at least 8 characters"
+      });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    const { data, error } = await db
+      .from("students")
+      .insert([{
+        full_name: fullName,
+        phone,
+        email: email || null,
+        gender: gender || null,
+        course,
+        education_level: educationLevel || null,
+        telegram: telegram || null,
+        password_hash: passwordHash
+      }])
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.status(201).json({
+      message: "Registration successful",
+      student: data
+    });
+
+  } catch (e) {
+    console.error("Student registration error:", e);
+    res.status(500).json({
+      message: "Could not save registration"
+    });
+  }
+});
+
 function auth(req,res,next){try{const h=req.headers.authorization||"";const token=h.startsWith("Bearer ")?h.slice(7):"";req.admin=jwt.verify(token,JWT_SECRET);next();}catch{return res.status(401).json({message:"Unauthorized"});}}console.log("ADMIN CONFIG CHECK:", {
   JWT_SECRET: !!process.env.JWT_SECRET,
   ADMIN_USERNAME: !!process.env.ADMIN_USERNAME,
