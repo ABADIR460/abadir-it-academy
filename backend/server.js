@@ -738,4 +738,37 @@ app.get("/api/admin/exam-attempts", auth, async (req, res) => {
     });
   }
 });
+app.patch("/api/admin/students/:id/password", auth, async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    if (!password || password.length < 8) {
+      return res.status(400).json({
+        message: "Password must be at least 8 characters"
+      });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    const { data, error } = await db
+      .from("students")
+      .update({ password_hash: passwordHash })
+      .eq("id", req.params.id)
+      .select("id")
+      .single();
+
+    if (error) throw error;
+
+    res.json({
+      message: "Student password updated successfully"
+    });
+
+  } catch (error) {
+    console.error("Password reset error:", error);
+    res.status(500).json({
+      message: "Could not reset student password"
+    });
+  }
+});
+
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
