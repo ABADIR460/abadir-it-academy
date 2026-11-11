@@ -126,37 +126,28 @@ app.post("/api/student/login", async (req, res) => {
       });
     }
 
-    const { data, error } = await db
-      .from("students")
-      .select("id, full_name, phone, course, password_hash")
-      .eq("phone", phone.trim());
+    
+const { data, error } = await db
+  .from("students")
+  .select("id, full_name, phone, course, password_hash")
+  .eq("phone", phone.trim())
+  .order("created_at", { ascending: false })
+  .limit(1);
 
-    if (error) throw error;
+if (error) throw error;
 
-    const matches = [];
+const student = data?.[0];
 
-    for (const student of (data || [])) {
-      if (
-        student.password_hash &&
-        await bcrypt.compare(password, student.password_hash)
-      ) {
-        matches.push(student);
-      }
-    }
+if (
+  !student ||
+  !student.password_hash ||
+  !(await bcrypt.compare(password, student.password_hash))
+) {
+  return res.status(401).json({
+    message: "Incorrect phone or password"
+  });
+}
 
-    if (matches.length === 0) {
-      return res.status(401).json({
-        message: "Incorrect phone or password"
-      });
-    }
-
-    if (matches.length > 1) {
-      return res.status(409).json({
-        message: "Multiple accounts found. Contact the academy admin."
-      });
-    }
-
-    const student = matches[0];
 
     const token = jwt.sign(
       {
