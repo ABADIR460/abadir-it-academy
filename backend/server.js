@@ -706,7 +706,39 @@ app.get("/api/admin/exam-attempts", auth, async (req, res) => {
       message: "Could not load exam results"
     });
   }
-});app.get("/api/student/exam-history", async (req, res) => {
+function studentAuth(req, res, next) {
+  const header = req.headers.authorization || "";
+  const token = header.startsWith("Bearer ")
+    ? header.slice(7)
+    : "";
+
+  if (!token) {
+    return res.status(401).json({
+      message: "Student login required"
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    if (decoded.role !== "student" || !decoded.studentId) {
+      return res.status(403).json({
+        message: "Student access only"
+      });
+    }
+
+    req.student = decoded;
+    next();
+
+  } catch (error) {
+    return res.status(401).json({
+      message: "Invalid or expired login"
+    });
+  }
+}
+
+});
+app.get("/api/student/exam-history", studentAuth, async (req, res) => {
   try {
     if (!db) {
       return res.status(503).json({
@@ -714,30 +746,25 @@ app.get("/api/admin/exam-attempts", auth, async (req, res) => {
       });
     }
 
-    const studentName = String(req.query.name || "").trim();
-
-    if (!studentName) {
-      return res.status(400).json({
-        message: "Student name is required"
-      });
-    }
-
     const { data, error } = await db
       .from("exam_attempts")
-      .select("exam_id, student_name, score, total_questions, submitted_at")
-      .ilike("student_name", studentName)
+      .select("exam_id, score, total_questions, submitted_at")
+      .eq("student_id", req.student.studentId)
       .order("submitted_at", { ascending: false });
 
     if (error) throw error;
 
     res.json(data);
+
   } catch (error) {
     console.error("Exam history error:", error);
+
     res.status(500).json({
       message: "Could not load exam history"
     });
   }
 });
+
 app.patch("/api/admin/students/:id/password", auth, async (req, res) => {
   try {
     const { password } = req.body;
