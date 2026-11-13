@@ -581,42 +581,69 @@ app.get("/api/exams/:id/questions", async (req, res) => {
   }
 });
 
-// Public: Submit exam and mark answers on server
-app.post("/api/exams/:id/submit", async (req, res) => {
+
+app.post("/api/exams/:id/submit", studentAuth, async (req, res) => {
   try {
     if (!db) {
-      return res.status(500).json({ message: "Database not configured" });
+      return res.status(503).json({
+        message: "Database not configured"
+      });
     }
 
-    const { student_name, answers } = req.body;
+    const { answers } = req.body;
 
-    if (!student_name || !Array.isArray(answers)) {
-      return res.status(400).json({ message: "Student name and answers are required" });
+    if (!Array.isArray(answers)) {
+      return res.status(400).json({
+        message: "Answers are required"
+      });
+    }
+
+    const studentId = req.student.studentId;
+
+    // Get student information from verified login
+    const { data: student, error: studentError } = await db
+      .from("students")
+      .select("id, full_name")
+      .eq("id", studentId)
+      .single();
+
+    if (studentError || !student) {
+      return res.status(404).json({
+        message: "Student account not found"
+      });
     }
 
     const { data: questions, error: qError } = await db
       .from("exam_questions")
-      .select("id,correct_answer")
+      .select("id, correct_answer")
       .eq("exam_id", req.params.id);
 
     if (qError) throw qError;
+
     if (!questions || questions.length === 0) {
-      return res.status(404).json({ message: "No questions found" });
+      return res.status(404).json({
+        message: "No questions found"
+      });
     }
 
     const answerMap = new Map(
-      answers.map(a => [String(a.question_id), String(a.answer)])
+      answers.map(a => [
+        String(a.question_id),
+        String(a.answer)
+      ])
     );
 
     const score = questions.reduce((total, q) => {
-      return total + (answerMap.get(String(q.id)) === String(q.correct_answer) ? 1 : 0);
+      return total +
+        (answerMap.get(String(q.id)) === String(q.correct_answer) ? 1 : 0);
     }, 0);
 
     const { error: saveError } = await db
       .from("exam_attempts")
       .insert([{
         exam_id: req.params.id,
-        student_name: student_name.trim(),
+        student_id: student.id,
+        student_name: student.full_name,
         score,
         total_questions: questions.length
       }]);
@@ -628,11 +655,16 @@ app.post("/api/exams/:id/submit", async (req, res) => {
       score,
       total_questions: questions.length
     });
-  } catch (e) {
-    console.error("Submit exam error:", e);
-    res.status(500).json({ message: "Could not submit exam" });
+
+  } catch (error) {
+    console.error("Submit exam error:", error);
+
+    res.status(500).json({
+      message: "Could not submit exam"
+    });
   }
-});// Admin: Publish exam
+});
+// Admin: Publish exam
 app.patch("/api/admin/exams/:id/publish", auth, async (req, res) => {
   try {
     if (!db) {
