@@ -237,12 +237,13 @@ if (!studentToken) {
 loadExams().catch(error => {
   document.getElementById("examStatus").textContent =
     "Error: " + error.message;
-});async function loadStudentHistory() {
-  const name = document.getElementById("historyName").value.trim();
+});
+async function loadStudentHistory() {
   const results = document.getElementById("historyResults");
+  const studentToken = localStorage.getItem("studentToken");
 
-  if (!name) {
-    results.textContent = "Please enter your name.";
+  if (!studentToken) {
+    window.location.href = "login.html";
     return;
   }
 
@@ -250,8 +251,13 @@ loadExams().catch(error => {
 
   try {
     const response = await fetch(
-      EXAM_API + "/api/student/exam-history?name=" +
-      encodeURIComponent(name)
+      EXAM_API + "/api/student/exam-history",
+      {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + studentToken
+        }
+      }
     );
 
     const data = await response.json();
@@ -268,7 +274,6 @@ loadExams().catch(error => {
     results.innerHTML = data.map(item => `
       <div class="card">
         <h3>Exam ID: ${escapeHistory(item.exam_id)}</h3>
-        <p>Student: ${escapeHistory(item.student_name)}</p>
         <p>Score: ${Number(item.score)} / ${Number(item.total_questions)}</p>
         <p>Date: ${new Date(item.submitted_at).toLocaleString()}</p>
       </div>
@@ -278,6 +283,7 @@ loadExams().catch(error => {
     results.textContent = "Error: " + error.message;
   }
 }
+
 
 function escapeHistory(value) {
   return String(value ?? "").replace(/[&<>"']/g, char => ({
