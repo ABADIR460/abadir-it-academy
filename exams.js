@@ -166,7 +166,12 @@ document.getElementById("onlineExamForm").addEventListener(
 
 async function submitExam(autoSubmit) {
   if (submitted || submitting) return;
+const studentToken = localStorage.getItem("studentToken");
 
+if (!studentToken) {
+  window.location.href = "login.html";
+  return;
+}
   const name = document.getElementById("studentExamName").value.trim();
   const result = document.getElementById("examResult");
 
@@ -194,8 +199,10 @@ async function submitExam(autoSubmit) {
     encodeURIComponent(activeExam.id) + "/submit", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
-        },
+  "Content-Type": "application/json",
+  "Authorization": "Bearer " + localStorage.getItem("studentToken")
+},
+
         body: JSON.stringify({
           student_name: name,
           answers: answers
