@@ -9,6 +9,14 @@
 </head>
 <body>
 
+<script>
+  const studentToken = localStorage.getItem("studentToken");
+
+  if (!studentToken) {
+    window.location.replace("login.html");
+  }
+</script>
+
 <header class="top">
   <a class="brand" href="index.html">
     <span class="logo">A</span>
