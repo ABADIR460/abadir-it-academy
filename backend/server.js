@@ -738,6 +738,7 @@ app.get("/api/admin/exam-attempts", auth, async (req, res) => {
       message: "Could not load exam results"
     });
   }
+
 function studentAuth(req, res, next) {
   const header = req.headers.authorization || "";
   const token = header.startsWith("Bearer ")
@@ -753,7 +754,10 @@ function studentAuth(req, res, next) {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    if (decoded.role !== "student" || !decoded.studentId) {
+    if (
+      decoded.role !== "student" ||
+      !decoded.studentId
+    ) {
       return res.status(403).json({
         message: "Student access only"
       });
@@ -768,7 +772,6 @@ function studentAuth(req, res, next) {
     });
   }
 }
-
 
 app.get("/api/student/exam-history", studentAuth, async (req, res) => {
   try {
