@@ -31,6 +31,18 @@
     <span class="tag">STUDENT LEARNING AREA</span>
     <h2>Student Dashboard</h2>
     <div id="studentProfile"></div>
+    <button type="button" onclick="studentLogout()">
+  Logout
+</button>
+
+<script>
+  function studentLogout() {
+    localStorage.removeItem("studentToken");
+    localStorage.removeItem("studentInfo");
+    window.location.replace("login.html");
+  }
+</script>
+
     <p>Learning materials and practice activities.</p>
   </div>
 
