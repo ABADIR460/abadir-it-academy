@@ -102,5 +102,21 @@
 </section>
 <<script src="materials.js"></script>
 <script src="exams.js?v=4"></script>
+<script>
+  const studentInfo = JSON.parse(
+    localStorage.getItem("studentInfo") || "{}"
+  );
+
+  const profile = document.getElementById("studentProfile");
+
+  if (profile) {
+    profile.innerHTML = `
+      <h3>Welcome, ${studentInfo.full_name || "Student"}!</h3>
+      <p>Phone: ${studentInfo.phone || ""}</p>
+      <p>Course: ${studentInfo.course || ""}</p>
+    `;
+  }
+</script>
+
 </body>
 </html>
