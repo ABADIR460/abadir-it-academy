@@ -769,7 +769,7 @@ function studentAuth(req, res, next) {
   }
 }
 
-});
+
 app.get("/api/student/exam-history", studentAuth, async (req, res) => {
   try {
     if (!db) {
