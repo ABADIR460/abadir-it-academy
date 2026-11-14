@@ -831,16 +831,37 @@ app.patch("/api/admin/students/:id/password", auth, async (req, res) => {
     });
   }
 });
+
 app.post("/api/student/certificates/issue", studentAuth, async (req, res) => {
   try {
-    const { course_name, course_completed } = req.body;
+    const { course_name } = req.body;
 
-    if (course_completed !== true) {
+    if (!course_name || !course_name.trim()) {
       return res.status(400).json({
-        message: "Course must be completed first"
+        message: "Course name is required"
       });
     }
 
+    const course = course_name.trim();
+
+    // Check admin approval
+    const { data: completion, error: approvalError } = await db
+      .from("course_completions")
+      .select("approved")
+      .eq("student_id", req.student.studentId)
+      .eq("course_name", course)
+      .eq("approved", true)
+      .maybeSingle();
+
+    if (approvalError) throw approvalError;
+
+    if (!completion) {
+      return res.status(403).json({
+        message: "Your course completion is not approved by admin yet."
+      });
+    }
+
+    // Check exam score
     const { data: attempts, error } = await db
       .from("exam_attempts")
       .select("score, total_questions")
@@ -848,17 +869,11 @@ app.post("/api/student/certificates/issue", studentAuth, async (req, res) => {
 
     if (error) throw error;
 
-    if (!attempts || attempts.length === 0) {
-      return res.status(400).json({
-        message: "No exam results found"
-      });
-    }
-
-    const totalQuestions = attempts.reduce(
+    const totalQuestions = (attempts || []).reduce(
       (sum, item) => sum + Number(item.total_questions), 0
     );
 
-    const totalScore = attempts.reduce(
+    const totalScore = (attempts || []).reduce(
       (sum, item) => sum + Number(item.score), 0
     );
 
@@ -868,19 +883,18 @@ app.post("/api/student/certificates/issue", studentAuth, async (req, res) => {
 
     if (percentage < 70) {
       return res.status(403).json({
-        message: "You need at least 70% to receive a certificate",
+        message: "You need at least 70% to receive a certificate.",
         score: percentage
       });
     }
 
-    const certificateId =
-      "ABADIR-" + Date.now();
+    const certificateId = "ABADIR-" + Date.now();
 
     const { data, error: saveError } = await db
       .from("certificates")
       .insert([{
         student_id: req.student.studentId,
-        course_name,
+        course_name: course,
         certificate_id: certificateId,
         score: percentage
       }])
@@ -901,6 +915,7 @@ app.post("/api/student/certificates/issue", studentAuth, async (req, res) => {
     });
   }
 });
+
 app.post("/api/admin/course-completions/approve", requireAdmin, async (req, res) => {
   try {
     const { student_id, course_name } = req.body;
