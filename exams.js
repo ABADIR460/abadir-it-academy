@@ -294,3 +294,55 @@ function escapeHistory(value) {
     "'": "&#39;"
   })[char]);
 }
+async function loadStudentProgress() {
+  const token = localStorage.getItem("studentToken");
+
+  if (!token) return;
+
+  try {
+    const response = await fetch(
+      EXAM_API + "/api/student/exam-history",
+      {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Could not load progress");
+    }
+
+    const data = await response.json();
+
+    const percentages = data.map(item => {
+      return Number(item.total_questions) > 0
+        ? (Number(item.score) / Number(item.total_questions)) * 100
+        : 0;
+    });
+
+    const total = percentages.length;
+
+    const average = total
+      ? percentages.reduce((a, b) => a + b, 0) / total
+      : 0;
+
+    const best = total ? Math.max(...percentages) : 0;
+
+    document.getElementById("examsTaken").textContent = total;
+    document.getElementById("averageScore").textContent =
+      Math.round(average) + "%";
+    document.getElementById("bestScore").textContent =
+      Math.round(best) + "%";
+
+    document.getElementById("progressChart").textContent =
+      total ? "Your exam progress is updated." : "No exam results yet.";
+
+  } catch (error) {
+    console.error("Progress error:", error);
+    document.getElementById("progressChart").textContent =
+      "Could not load progress.";
+  }
+}
+
+loadStudentProgress();
