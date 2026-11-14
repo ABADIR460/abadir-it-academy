@@ -831,5 +831,74 @@ app.patch("/api/admin/students/:id/password", auth, async (req, res) => {
     });
   }
 });
+app.post("/api/student/certificates/issue", studentAuth, async (req, res) => {
+  try {
+    const { course_name, course_completed } = req.body;
 
+    if (course_completed !== true) {
+      return res.status(400).json({
+        message: "Course must be completed first"
+      });
+    }
+
+    const { data: attempts, error } = await db
+      .from("exam_attempts")
+      .select("score, total_questions")
+      .eq("student_id", req.student.studentId);
+
+    if (error) throw error;
+
+    if (!attempts || attempts.length === 0) {
+      return res.status(400).json({
+        message: "No exam results found"
+      });
+    }
+
+    const totalQuestions = attempts.reduce(
+      (sum, item) => sum + Number(item.total_questions), 0
+    );
+
+    const totalScore = attempts.reduce(
+      (sum, item) => sum + Number(item.score), 0
+    );
+
+    const percentage = totalQuestions > 0
+      ? (totalScore / totalQuestions) * 100
+      : 0;
+
+    if (percentage < 70) {
+      return res.status(403).json({
+        message: "You need at least 70% to receive a certificate",
+        score: percentage
+      });
+    }
+
+    const certificateId =
+      "ABADIR-" + Date.now();
+
+    const { data, error: saveError } = await db
+      .from("certificates")
+      .insert([{
+        student_id: req.student.studentId,
+        course_name,
+        certificate_id: certificateId,
+        score: percentage
+      }])
+      .select()
+      .single();
+
+    if (saveError) throw saveError;
+
+    res.json({
+      message: "Certificate issued successfully",
+      certificate: data
+    });
+
+  } catch (error) {
+    console.error("Certificate error:", error);
+    res.status(500).json({
+      message: "Could not issue certificate"
+    });
+  }
+});
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
