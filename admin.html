@@ -123,4 +123,24 @@
   <div id="examResultsList">
     Click Load Exam Results
   </div>
-</section></body></html> 
+</section>
+  <section class="card">
+  <h2>Course Completion Approval</h2>
+
+  <label>Student ID</label>
+  <input type="number" id="approvalStudentId"
+         placeholder="Enter student ID">
+
+  <label>Course Name</label>
+  <input type="text" id="approvalCourseName"
+         placeholder="Enter course name">
+
+  <button type="button" onclick="approveCourse()">
+    Approve Course
+  </button>
+
+  <p id="approvalMessage"></p>
+</section>
+
+<script src="approval.js"></script>
+</body></html> 
