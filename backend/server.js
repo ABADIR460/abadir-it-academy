@@ -262,6 +262,38 @@ app.post(
     }
   });
 
+function requireAdmin(req, res, next) {
+  const header = req.headers.authorization || "";
+
+  const token = header.startsWith("Bearer ")
+    ? header.slice(7)
+    : "";
+
+  if (!token) {
+    return res.status(401).json({
+      message: "Admin login required"
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    if (decoded.role !== "admin") {
+      return res.status(403).json({
+        message: "Admin access only"
+      });
+    }
+
+    req.admin = decoded;
+    next();
+
+  } catch (error) {
+    return res.status(401).json({
+      message: "Invalid or expired admin login"
+    });
+  }
+}
+
 app.post("/api/admin/login",async(req,res)=>{try{const {username,password}=req.body;if(!JWT_SECRET||!ADMIN_USERNAME||!ADMIN_PASSWORD_HASH)return res.status(503).json({message:"Admin environment variables are missing"});if(username!==ADMIN_USERNAME||!await bcrypt.compare(password,ADMIN_PASSWORD_HASH))return res.status(401).json({message:"Incorrect username or password"});const token=jwt.sign({role:"admin"},JWT_SECRET,{expiresIn:"8h"});res.json({token});}catch(e){res.status(500).json({message:"Login error"});}});
 app.get("/api/students",auth,async(req,res)=>{try{if(!db)return res.status(503).json({message:"Database is not configured"});const {data,error}=await db.from("students").select("*").order("created_at",{ascending:false});if(error)throw error;res.json(data);}catch(e){console.error(e);res.status(500).json({message:"Could not retrieve students"});}});
 // UPDATE STUDENT
