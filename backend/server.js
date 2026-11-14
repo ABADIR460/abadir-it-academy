@@ -294,7 +294,46 @@ function requireAdmin(req, res, next) {
   }
 }
 
-app.post("/api/admin/login",async(req,res)=>{try{const {username,password}=req.body;if(!JWT_SECRET||!ADMIN_USERNAME||!ADMIN_PASSWORD_HASH)return res.status(503).json({message:"Admin environment variables are missing"});const usernameOK = username === ADMIN_USERNAME;
+
+app.post("/api/admin/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!JWT_SECRET || !ADMIN_USERNAME || !ADMIN_PASSWORD_HASH) {
+      return res.status(503).json({
+        message: "Admin environment variables are missing"
+      });
+    }
+
+    const usernameOK = username === ADMIN_USERNAME;
+    const passwordOK = await bcrypt.compare(
+      password,
+      ADMIN_PASSWORD_HASH
+    );
+
+    console.log("Admin username match:", usernameOK);
+    console.log("Admin password match:", passwordOK);
+
+    if (!usernameOK || !passwordOK) {
+      return res.status(401).json({
+        message: "Incorrect username or password"
+      });
+    }
+
+    const token = jwt.sign(
+      { role: "admin" },
+      JWT_SECRET,
+      { expiresIn: "8h" }
+    );
+
+    res.json({ token });
+
+  } catch (e) {
+    console.error("Admin login error:", e.message);
+    res.status(500).json({ message: "Login error" });
+  }
+});
+;const usernameOK = username === ADMIN_USERNAME;
 const passwordOK = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
 
 console.log("Admin username match:", usernameOK);
