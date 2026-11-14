@@ -901,4 +901,43 @@ app.post("/api/student/certificates/issue", studentAuth, async (req, res) => {
     });
   }
 });
+app.post("/api/admin/course-completions/approve", requireAdmin, async (req, res) => {
+  try {
+    const { student_id, course_name } = req.body;
+
+    if (!student_id || !course_name || !course_name.trim()) {
+      return res.status(400).json({
+        message: "Student ID and course name are required"
+      });
+    }
+
+    const { data, error } = await db
+      .from("course_completions")
+      .upsert(
+        [{
+          student_id: Number(student_id),
+          course_name: course_name.trim(),
+          approved: true,
+          approved_at: new Date().toISOString()
+        }],
+        { onConflict: "student_id,course_name" }
+      )
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.json({
+      message: "Course completion approved",
+      completion: data
+    });
+
+  } catch (error) {
+    console.error("Approval error:", error);
+    res.status(500).json({
+      message: "Could not approve course completion"
+    });
+  }
+});
+
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
