@@ -25,11 +25,9 @@ async function requestCertificate() {
           "Authorization": "Bearer " + token
         },
         body: JSON.stringify({
-          course_name: course,
-          course_completed: true
-        })
-      }
-    );
+  course_name: course
+ })
+      });
 
     const data = await response.json();
 
