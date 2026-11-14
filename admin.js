@@ -25,6 +25,16 @@ document.getElementById("login").addEventListener("submit", async (e) => {
 localStorage.setItem("adminToken", j.token);
     document.getElementById("login").hidden = true;
     document.getElementById("panel").hidden = false;
+msg.textContent = "Login successful!";
+
+    if (typeof loadStudents === "function") {
+      loadStudents();
+    }
+
+  } catch (error) {
+    msg.textContent = "Error: " + error.message;
+  }
+});
 
     await load();
   await loadExams();  
