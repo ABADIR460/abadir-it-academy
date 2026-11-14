@@ -36,38 +36,9 @@ msg.textContent = "Login successful!";
   }
 });
 
-    // Restore admin session
-document.addEventListener("DOMContentLoaded", async () => {
-  const savedToken = localStorage.getItem("adminToken");
-
-  if (!savedToken) return;
-
-  token = savedToken;
-
-  try {
-    const r = await fetch(API + "/api/students", {
-      headers: {
-        Authorization: "Bearer " + token
-      }
-    });
-
-    if (!r.ok) {
-      localStorage.removeItem("adminToken");
-      token = "";
-      return;
-    }
-
-    document.getElementById("login").hidden = true;
-    document.getElementById("panel").hidden = false;
-
-    await load();
-    await loadExams();
-
-  } catch (error) {
-    console.error("Admin session error:", error);
-  }
-});
-
+// Admin session starts only after login
+localStorage.removeItem("adminToken");
+token = "";
 async function load() {
   const r = await fetch(API + "/api/students", {
     headers: { Authorization: "Bearer " + token }
