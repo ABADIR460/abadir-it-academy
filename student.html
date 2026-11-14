@@ -148,6 +148,33 @@
     `;
   }
 </script>
+<section class="card" id="certificateSection">
+  <h2>🏆 My Certificate</h2>
 
+  <p>
+    Complete your course and score at least 70%
+    to qualify for your certificate.
+  </p>
+
+  <label for="certificateCourse">
+    Course Name
+  </label>
+
+  <input
+    type="text"
+    id="certificateCourse"
+    placeholder="Enter course name"
+  >
+
+  <button
+    class="btn"
+    type="button"
+    onclick="requestCertificate()"
+  >
+    Get My Certificate
+  </button>
+
+  <div id="certificateMessage"></div>
+</section>
 </body>
 </html>
