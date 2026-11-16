@@ -223,3 +223,28 @@ select:focus-visible {
   }
 }
 
+
+/* GREEN BUTTON DESIGN */
+
+.btn:not(.light),
+.featured-button {
+  background: #07966f !important;
+  color: #ffffff !important;
+  border: none;
+}
+
+.btn:not(.light):hover,
+.featured-button:hover {
+  background: #067956 !important;
+}
+
+.outline {
+  background: #ffffff !important;
+  color: #07966f !important;
+  border: 1px solid #07966f !important;
+}
+
+.light {
+  background: #ffffff !important;
+  color: #07966f !important;
+}
