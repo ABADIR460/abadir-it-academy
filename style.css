@@ -78,3 +78,51 @@ select:focus-visible {
     padding: 10px;
   }
 }
+/* STUDENT REGISTRATION HEADER BUTTON */
+
+.header-register {
+  display: inline-block;
+  background: #07966f;
+  color: white;
+  padding: 14px 25px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: .25s ease;
+}
+
+.header-register:hover {
+  background: #067956;
+  transform: translateY(-2px);
+}
+
+@media(max-width:700px) {
+  .top {
+    gap: 10px;
+  }
+
+  .brand {
+    font-size: 14px;
+    gap: 6px;
+  }
+
+  .logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .header-register {
+    padding: 11px 15px;
+    font-size: 12px;
+  }
+
+  .menu {
+    padding: 9px 12px;
+  }
+
+  .lang {
+    margin-left: auto;
+  }
+}
+
