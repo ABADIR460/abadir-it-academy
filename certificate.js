@@ -1,6 +1,3 @@
-
-JavaScript
-
 async function requestCertificate() {
   const message = document.getElementById("certificateMessage");
   const course = document.getElementById("certificateCourse").value.trim();
