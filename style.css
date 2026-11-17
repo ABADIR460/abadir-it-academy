@@ -253,10 +253,10 @@ select:focus-visible {
 
 
 .featured-art {
-  min-height: 280px;
-  padding: 12px;
-  background: linear-gradient(135deg, #07966f, #123c32);
-  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px;
 }
 
 .instructor-photo {
@@ -264,9 +264,8 @@ select:focus-visible {
   height: 160px;
   object-fit: cover;
   object-position: center;
-  display: block;
-  margin: auto;
   border-radius: 50%;
+  display: block;
 }
 
 @media(max-width:700px) {
