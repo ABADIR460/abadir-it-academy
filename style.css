@@ -354,3 +354,33 @@ select:focus-visible {
   font-size: 12px;
   letter-spacing: 2px;
 }
+
+#notes .card {
+  position: relative;
+  min-height: 250px;
+  border-top: 4px solid #07966f;
+}
+
+#notes .card .emoji {
+  width: 65px;
+  height: 65px;
+  background: #e9f8f2;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+#notes .card .pill {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+#notes .card .textlink {
+  display: inline-block;
+  margin-top: 18px;
+  font-weight: bold;
+  color: #07966f;
+  text-decoration: none;
+}
