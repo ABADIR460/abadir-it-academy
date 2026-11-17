@@ -384,3 +384,69 @@ select:focus-visible {
   color: #07966f;
   text-decoration: none;
 }
+
+.exam {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 30px;
+  align-items: center;
+  padding: 55px;
+  background: #e9f8f2;
+  border-radius: 22px;
+  margin: 40px auto;
+}
+
+.exam-content h2 {
+  font-size: 32px;
+  color: #123c32;
+  margin: 15px 0;
+}
+
+.exam-content p {
+  line-height: 1.8;
+  color: #555;
+}
+
+.exam-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.exam-features span {
+  background: white;
+  padding: 10px 14px;
+  border-radius: 20px;
+  color: #07966f;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.exam-action {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+.exam-icon {
+  font-size: 45px;
+}
+
+.exam-action h3 {
+  color: #123c32;
+}
+
+.exam-action p {
+  color: #737b84;
+  line-height: 1.6;
+}
+
+@media(max-width:700px) {
+  .exam {
+    grid-template-columns: 1fr;
+    padding: 25px;
+  }
+}
