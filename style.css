@@ -450,3 +450,70 @@ select:focus-visible {
     padding: 25px;
   }
 }
+
+.register {
+  background: #f3faf6;
+  border-radius: 22px;
+  padding: 45px 25px;
+}
+
+.register form {
+  max-width: 750px;
+  margin: 30px auto 0;
+  padding: 30px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+}
+
+.register .formgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.register label {
+  display: block;
+  font-weight: 600;
+  color: #123c32;
+}
+
+.register input,
+.register select {
+  width: 100%;
+  padding: 13px;
+  margin-top: 8px;
+  border: 1px solid #dce8e1;
+  border-radius: 9px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.register input:focus,
+.register select:focus {
+  outline: 2px solid #07966f;
+  border-color: #07966f;
+}
+
+.register .wide {
+  grid-column: 1 / -1;
+}
+
+.register button {
+  width: 100%;
+  margin-top: 22px;
+}
+
+@media(max-width:600px) {
+  .register .formgrid {
+    grid-template-columns: 1fr;
+  }
+
+  .register form {
+    padding: 20px;
+  }
+
+  .register .wide {
+    grid-column: auto;
+  }
+}
