@@ -435,13 +435,14 @@ if (examForm) {
           Authorization: "Bearer " + token
         },
         body: JSON.stringify({
-          title: document.getElementById("examTitle").value,
-          description: document.getElementById("examDescription").value,
-          duration_minutes: Number(
-            document.getElementById("examDuration").value
-          )
-        })
-      });
+  title: document.getElementById("examTitle").value,
+  course_name: document.getElementById("examCourse").value,
+  description: document.getElementById("examDescription").value,
+  duration_minutes: Number(
+    document.getElementById("examDuration").value
+  )
+})
+
 
       const result = await response.json();
       if (!response.ok) throw new Error(result.message);
