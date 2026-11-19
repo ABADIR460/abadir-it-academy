@@ -542,23 +542,34 @@ app.delete("/api/admin/materials/:id", auth, async (req, res) => {
   }
 });// ================= ONLINE EXAMS =================
 
+
 // Admin: Create exam
 app.post("/api/admin/exams", auth, async (req, res) => {
   try {
     if (!db) {
-      return res.status(500).json({ message: "Database not configured" });
+      return res.status(500).json({
+        message: "Database not configured"
+      });
     }
 
-    const { title, description, duration_minutes } = req.body;
+    const {
+      title,
+      course_name,
+      description,
+      duration_minutes
+    } = req.body;
 
-    if (!title || !duration_minutes) {
-      return res.status(400).json({ message: "Title and duration are required" });
+    if (!title || !course_name || !duration_minutes) {
+      return res.status(400).json({
+        message: "Title, course and duration are required"
+      });
     }
 
     const { data, error } = await db
       .from("exams")
       .insert([{
         title,
+        course_name,
         description,
         duration_minutes,
         is_published: false
@@ -568,12 +579,19 @@ app.post("/api/admin/exams", auth, async (req, res) => {
 
     if (error) throw error;
 
-    res.json({ message: "Exam created successfully", exam: data });
+    res.json({
+      message: "Exam created successfully",
+      exam: data
+    });
+
   } catch (e) {
     console.error("Create exam error:", e);
-    res.status(500).json({ message: "Could not create exam" });
+    res.status(500).json({
+      message: e.message || "Could not create exam"
+    });
   }
 });
+
 
 // Admin: Add question
 app.post("/api/admin/exams/:id/questions", auth, async (req, res) => {
