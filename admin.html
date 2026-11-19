@@ -51,29 +51,41 @@
 </div><div class="section">
   <h2>📝 Online Exam Management</h2>
 
-  <form id="examForm">
-    <input
-      type="text"
-      id="examTitle"
-      placeholder="Exam Title"
-      required
-    >
+<form id="examForm">
+  <input
+    type="text"
+    id="examTitle"
+    placeholder="Exam Title"
+    required
+  >
 
-    <textarea
-      id="examDescription"
-      placeholder="Exam Description"
-    ></textarea>
+  <select id="examCourse" required>
+    <option value="">Select Course</option>
+    <option value="Computer Basics">Computer Basics</option>
+    <option value="Web Development">Web Development</option>
+    <option value="Database Management">Database Management</option>
+    <option value="Artificial Intelligence">Artificial Intelligence</option>
+    <option value="Computer Networking">Computer Networking</option>
+    <option value="IT Support">IT Support</option>
+    <option value="Information Technology">Information Technology</option>
+  </select>
 
-    <input
-      type="number"
-      id="examDuration"
-      placeholder="Duration (Minutes)"
-      min="1"
-      required
-    >
+  <textarea
+    id="examDescription"
+    placeholder="Exam Description"
+  ></textarea>
 
-    <button type="submit">Create Exam</button>
-  </form>
+  <input
+    type="number"
+    id="examDuration"
+    placeholder="Duration (Minutes)"
+    min="1"
+    required
+  >
+
+  <button type="submit">Create Exam</button>
+</form>
+
 
   <p id="examMsg"></p>
 
