@@ -394,14 +394,13 @@ const examMsg = document.getElementById("examMsg");
 const questionForm = document.getElementById("questionForm");
 const questionMsg = document.getElementById("questionMsg");
 const publishExamBtn = document.getElementById("publishExam");
-
 // Load exams
 async function loadExams() {
   try {
     const response = await fetch(API + "/api/admin/exams", {
       headers: {
-  "Authorization": "Bearer " + token
-  }
+        "Authorization": "Bearer " + token
+      }
     });
 
     const exams = await response.json();
@@ -417,10 +416,31 @@ async function loadExams() {
       examSelect.appendChild(option);
     });
 
+    const list = document.getElementById("examList");
+
+    if (list) {
+      list.innerHTML = "";
+
+      exams.forEach(exam => {
+        const item = document.createElement("div");
+
+        item.innerHTML = `
+          <span>${exam.title}</span>
+          <button type="button"
+            onclick="deleteExam('${exam.id}')">
+            Delete
+          </button>
+        `;
+
+        list.appendChild(item);
+      });
+    }
+
   } catch (error) {
     examMsg.textContent = error.message;
   }
 }
+
 // Delete exam
 async function deleteExam(id) {
   const confirmDelete = confirm(
