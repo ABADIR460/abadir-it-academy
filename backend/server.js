@@ -1042,5 +1042,32 @@ app.post("/api/admin/course-completions/approve", requireAdmin, async (req, res)
     });
   }
 });
+// Admin: Delete exam and its questions
+app.delete("/api/admin/exams/:id", auth, async (req, res) => {
+  try {
+    const examId = req.params.id;
 
+    const { error: questionError } = await db
+      .from("exam_questions")
+      .delete()
+      .eq("exam_id", examId);
+
+    if (questionError) throw questionError;
+
+    const { error: examError } = await db
+      .from("exams")
+      .delete()
+      .eq("id", examId);
+
+    if (examError) throw examError;
+
+    res.json({ message: "Exam deleted successfully" });
+
+  } catch (error) {
+    console.error("Delete exam error:", error);
+    res.status(500).json({
+      message: error.message || "Could not delete exam"
+    });
+  }
+});
 app.listen(PORT,()=>console.log("Server running on port "+PORT));
