@@ -421,7 +421,38 @@ async function loadExams() {
     examMsg.textContent = error.message;
   }
 }
+// Delete exam
+async function deleteExam(id) {
+  const confirmDelete = confirm(
+    "Are you sure you want to delete this exam and its questions?"
+  );
 
+  if (!confirmDelete) return;
+
+  try {
+    const response = await fetch(
+      API + "/api/admin/exams/" + id,
+      {
+        method: "DELETE",
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Could not delete exam");
+    }
+
+    examMsg.textContent = "Exam deleted successfully!";
+    await loadExams();
+
+  } catch (error) {
+    examMsg.textContent = error.message;
+  }
+}
 // Create exam
 if (examForm) {
   examForm.addEventListener("submit", async function(e) {
